@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import type { InspectionRecord, TransitCorridor, CorridorStatus, Language } from '../types';
-import { performDBSCANClustering } from '../analytics/dbscan';
 import { VoiceAlertBanner } from './VoiceAlertBanner';
 
 interface RouteStatusBoardScreenProps {
@@ -42,18 +41,18 @@ export const RouteStatusBoardScreen: React.FC<RouteStatusBoardScreenProps> = ({
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.fillStyle = '#e8e8e8';
+    ctx.fillStyle = '#f8fafc';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.strokeStyle = '#c3c6d7';
+    ctx.strokeStyle = '#e2e8f0';
     ctx.lineWidth = 1;
-    for (let x = 0; x < canvas.width; x += 30 * zoomLevel) {
+    for (let x = 0; x < canvas.width; x += 35 * zoomLevel) {
       ctx.beginPath();
       ctx.moveTo(x, 0);
       ctx.lineTo(x, canvas.height);
       ctx.stroke();
     }
-    for (let y = 0; y < canvas.height; y += 30 * zoomLevel) {
+    for (let y = 0; y < canvas.height; y += 35 * zoomLevel) {
       ctx.beginPath();
       ctx.moveTo(0, y);
       ctx.lineTo(canvas.width, y);
@@ -63,28 +62,28 @@ export const RouteStatusBoardScreen: React.FC<RouteStatusBoardScreenProps> = ({
     ctx.lineWidth = 4;
 
     // NH-55 (Hill Cart Road) - Red Blocked
-    ctx.strokeStyle = '#ba1a1a';
+    ctx.strokeStyle = '#ef4444';
     ctx.beginPath();
     ctx.moveTo(20, 180);
     ctx.quadraticCurveTo(120, 100, 200, 40);
     ctx.stroke();
 
     // Rohini Road - Orange Caution
-    ctx.strokeStyle = '#fd651e';
+    ctx.strokeStyle = '#f97316';
     ctx.beginPath();
     ctx.moveTo(80, 200);
     ctx.quadraticCurveTo(180, 140, 280, 90);
     ctx.stroke();
 
     // Teesta Valley NH-10 - Green Open
-    ctx.strokeStyle = '#007f36';
+    ctx.strokeStyle = '#22c55e';
     ctx.beginPath();
     ctx.moveTo(150, 210);
     ctx.quadraticCurveTo(240, 110, 320, 20);
     ctx.stroke();
 
     // Hotspot pin
-    ctx.fillStyle = '#ba1a1a';
+    ctx.fillStyle = '#ef4444';
     ctx.beginPath();
     ctx.arc(140, 90, 7, 0, Math.PI * 2);
     ctx.fill();
@@ -92,9 +91,9 @@ export const RouteStatusBoardScreen: React.FC<RouteStatusBoardScreenProps> = ({
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    ctx.fillStyle = '#1b1b1b';
-    ctx.font = 'bold 11px "Space Grotesk"';
-    ctx.fillText('Paglajhora (BLOCKED)', 152, 92);
+    ctx.fillStyle = '#0f172a';
+    ctx.font = 'bold 12px font-sans';
+    ctx.fillText('Paglajhora (BLOCKED ⛔)', 154, 94);
   }, [zoomLevel]);
 
   const speakSummary = (text: string) => {
@@ -103,13 +102,11 @@ export const RouteStatusBoardScreen: React.FC<RouteStatusBoardScreenProps> = ({
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 0.95;
       window.speechSynthesis.speak(utterance);
-      triggerToast('Playing Audio Summary');
+      triggerToast('🔊 Playing Voice Summary');
     } else {
       alert(text);
     }
   };
-
-  const clusters = performDBSCANClustering(inspections, 30, 2);
 
   const corridorStatuses: CorridorStatus[] = CORRIDORS.map((corridor) => {
     const corridorReports = inspections.filter((r) => r.corridor === corridor);
@@ -122,11 +119,11 @@ export const RouteStatusBoardScreen: React.FC<RouteStatusBoardScreenProps> = ({
         ? Math.max(...corridorReports.map((r) => r.timestamp))
         : Date.now();
 
-    let summary = 'Road clear and operational.';
+    let summary = 'Road clear and open for vehicles.';
     if (!isPassable) {
-      summary = `⚠️ BLOCKED at ${spots.join(', ') || 'Sinking Zone'}. Divert light traffic via Pankhabari.`;
+      summary = `⚠️ ROAD BLOCKED at ${spots.join(', ') || 'Sinking Zone'}. Divert via Pankhabari.`;
     } else if (corridorReports.length > 0) {
-      summary = `Caution: ${corridorReports.length} hazard report(s) logged along steep Dhar ridges.`;
+      summary = `Caution: ${corridorReports.length} hazard report(s) logged. Drive safely.`;
     }
 
     return {
@@ -140,69 +137,43 @@ export const RouteStatusBoardScreen: React.FC<RouteStatusBoardScreenProps> = ({
   });
 
   return (
-    <div className="flex flex-col w-full gap-4 font-mono">
-      {/* 1. Recent Trilingual Voice Alert Component */}
+    <div className="flex flex-col w-full gap-4 font-sans">
+      {/* 1. Permanent Voice Alert Banner */}
       <VoiceAlertBanner language={language} />
 
-      {/* 2. Sub-Header Status Bar */}
-      <section className="flex flex-col gap-1.5 p-3.5 bg-white border-2 border-black rounded-xl shadow-[3px_3px_0px_#000]">
-        <div className="flex items-center justify-between gap-2 flex-wrap">
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="material-symbols-outlined text-blue-600 text-[22px] shrink-0">map</span>
-            <h1 className="text-base font-extrabold uppercase text-black truncate">
-              Route Corridor Board
-            </h1>
-          </div>
-          <div className="flex items-center gap-1.5 px-2 py-0.5 bg-emerald-100 text-emerald-800 border border-emerald-400 rounded text-xs font-bold shrink-0">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-            <span>LIVE P2P MESH</span>
-          </div>
-        </div>
-        <div className="flex items-center justify-between text-xs text-gray-700 pt-1.5 border-t border-gray-200">
-          <span className="truncate">Active Peer: <strong className="text-black font-bold">GTA-942</strong> (3m ago)</span>
-          <span className="shrink-0 text-emerald-700 font-bold flex items-center gap-1">
-            <span className="material-symbols-outlined text-[16px]">offline_bolt</span>
-            Geo-Cache: ACTIVE
-          </span>
-        </div>
-      </section>
-
-      {/* 3. High Risk Emergency Alert Box */}
+      {/* 2. Emergency Alert Notice */}
       {!alertAcknowledged && (
-        <section className="flex flex-col bg-red-600 text-white rounded-xl p-4 shadow-[3px_3px_0px_#000] border-2 border-black">
+        <section className="flex flex-col bg-red-600 text-white rounded-2xl p-4 shadow-sm border border-red-700 gap-3">
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-lg bg-white text-red-600 flex items-center justify-center shrink-0 shadow font-extrabold border-2 border-black">
+            <div className="w-10 h-10 rounded-xl bg-white/20 text-white flex items-center justify-center shrink-0 font-bold">
               <span className="material-symbols-outlined text-[26px]">warning</span>
             </div>
             <div className="flex flex-col flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] font-mono uppercase px-2 py-0.5 bg-white text-red-700 rounded font-extrabold border border-black">
-                  CRITICAL ALERT
-                </span>
-                <span className="text-xs font-mono font-bold text-white/90">NH-10 SECTOR</span>
-              </div>
-              <h2 className="font-headline-md text-lg text-white uppercase mt-1 leading-tight font-extrabold">
-                Active Landslide (पहिरा): Sevoke Rd
+              <span className="text-[11px] font-bold uppercase tracking-wider text-red-200">
+                CRITICAL EMERGENCY
+              </span>
+              <h2 className="text-base sm:text-lg font-extrabold uppercase leading-snug mt-0.5">
+                Landslide: Sevoke Road (NH-10)
               </h2>
+              <p className="text-xs sm:text-sm text-white/90 mt-1 font-medium leading-relaxed">
+                Active mudslide near Teesta Bazaar. Light traffic divert via Monsong.
+              </p>
             </div>
           </div>
-          <p className="text-sm font-mono text-white/95 mt-2.5 leading-relaxed font-semibold">
-            Debris flow active near Teesta Bazaar. Local diversions via Monsong. Verified by <strong>GTA Disaster Control Room</strong>.
-          </p>
 
-          <div className="grid grid-cols-2 gap-2 mt-4">
+          <div className="grid grid-cols-2 gap-2 mt-1">
             <button
               type="button"
               onClick={() => setAlertAcknowledged(true)}
-              className="h-12 flex items-center justify-center gap-1.5 bg-white text-black border-2 border-black rounded-lg font-mono text-xs uppercase font-extrabold hover:bg-gray-100 transition-transform active:scale-95 cursor-pointer shadow-[2px_2px_0px_#000]"
+              className="h-10 flex items-center justify-center gap-1.5 bg-white text-red-700 rounded-xl text-xs uppercase font-extrabold hover:bg-gray-100 cursor-pointer shadow-sm"
             >
-              <span className="material-symbols-outlined text-[18px]">done_all</span>
-              <span>Acknowledge</span>
+              <span className="material-symbols-outlined text-[18px]">done</span>
+              <span>Dismiss</span>
             </button>
             <button
               type="button"
               onClick={onNavigateToMesh}
-              className="h-12 flex items-center justify-center gap-1.5 bg-black text-white border-2 border-black rounded-lg font-mono text-xs uppercase font-extrabold hover:bg-gray-800 transition-transform active:scale-95 cursor-pointer shadow-[2px_2px_0px_#fff]"
+              className="h-10 flex items-center justify-center gap-1.5 bg-gray-900 text-white rounded-xl text-xs uppercase font-extrabold hover:bg-black cursor-pointer shadow-sm"
             >
               <span className="material-symbols-outlined text-[18px]">share</span>
               <span>Share Offline</span>
@@ -212,127 +183,126 @@ export const RouteStatusBoardScreen: React.FC<RouteStatusBoardScreenProps> = ({
       )}
 
       {toastMsg && (
-        <div className="p-3 bg-on-surface text-surface-bright rounded-xl shadow-xl font-label-sm text-label-sm flex items-center gap-2">
-          <span className="material-symbols-outlined text-tertiary-fixed">info</span>
+        <div className="p-3 bg-gray-900 text-white rounded-xl shadow text-xs font-bold flex items-center gap-2">
+          <span className="material-symbols-outlined text-amber-400">info</span>
           <span>{toastMsg}</span>
         </div>
       )}
 
-      {/* Vector Ridge Pass Map Container */}
-      <section className="flex flex-col bg-white rounded-xl overflow-hidden border-2 border-black shadow-[3px_3px_0px_#000]">
-        <div className="p-3 bg-gray-100 border-b-2 border-black flex items-center justify-between">
+      {/* 3. Mountain Ridge Map */}
+      <section className="flex flex-col bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
+        <div className="p-3.5 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-blue-600 text-[20px]">terrain</span>
-            <span className="font-extrabold uppercase tracking-tight text-black text-sm">Mountain Pass Ridge Map</span>
+            <h3 className="font-extrabold text-gray-900 text-sm">Pass Ridge Map</h3>
           </div>
-          <span className="text-xs px-2 py-0.5 bg-white border border-black text-black rounded font-bold">
-            1,420 GeoTiles Cached
+          <span className="text-xs px-2.5 py-0.5 bg-emerald-100 text-emerald-800 rounded-full font-bold">
+            🟢 Offline Cached
           </span>
         </div>
 
-        <div className="relative w-full h-56 bg-gray-200 overflow-hidden">
-          <canvas ref={canvasRef} width={358} height={224} className="w-full h-full block cursor-grab" />
-          
-          <div className="absolute top-2 left-2 pointer-events-none bg-white/95 backdrop-blur px-2.5 py-1 rounded-lg border-2 border-black shadow-[1.5px_1.5px_0px_#000]">
-            <p className="text-xs text-black uppercase font-extrabold">Darjeeling - Siliguri Ridge Vector</p>
-            <p className="text-[11px] text-gray-700 font-bold">Elev: 2,042m • GPS Mode: Inertial Mesh</p>
-          </div>
+        <div className="relative w-full h-48 bg-slate-50 overflow-hidden">
+          <canvas ref={canvasRef} width={358} height={192} className="w-full h-full block" />
 
-          <div className="absolute right-2 bottom-2 flex flex-col gap-1.5 z-10">
+          <div className="absolute right-2 bottom-2 flex flex-col gap-1 z-10">
             <button
               type="button"
               onClick={() => setZoomLevel((z) => Math.min(2, z + 0.2))}
-              className="w-10 h-10 bg-white text-black border-2 border-black rounded-lg shadow-[2px_2px_0px_#000] flex items-center justify-center active:scale-95 transition-all text-[20px] font-extrabold cursor-pointer"
+              className="w-9 h-9 bg-white text-gray-900 border border-gray-300 rounded-lg shadow-sm flex items-center justify-center active:scale-95 text-lg font-bold cursor-pointer"
             >
               +
             </button>
             <button
               type="button"
               onClick={() => setZoomLevel((z) => Math.max(0.6, z - 0.2))}
-              className="w-10 h-10 bg-white text-black border-2 border-black rounded-lg shadow-[2px_2px_0px_#000] flex items-center justify-center active:scale-95 transition-all text-[20px] font-extrabold cursor-pointer"
+              className="w-9 h-9 bg-white text-gray-900 border border-gray-300 rounded-lg shadow-sm flex items-center justify-center active:scale-95 text-lg font-bold cursor-pointer"
             >
               -
             </button>
           </div>
 
-          <div className="absolute left-2 bottom-2 bg-white/95 border border-black px-2 py-1 rounded text-black text-xs font-bold flex items-center gap-2">
-            <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-red-600 border border-black" /> Blocked</span>
-            <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-amber-500 border border-black" /> Caution</span>
-            <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-emerald-600 border border-black" /> Open</span>
+          <div className="absolute left-2 bottom-2 bg-white/90 backdrop-blur border border-gray-200 px-2.5 py-1 rounded-lg text-gray-900 text-xs font-bold flex items-center gap-3">
+            <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-red-500" /> Blocked</span>
+            <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-amber-500" /> Caution</span>
+            <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Open</span>
           </div>
         </div>
       </section>
 
-      {/* Corridor Status Feed */}
+      {/* 4. Mountain Road Cards */}
       <section className="flex flex-col gap-2.5">
         <div className="flex items-center justify-between px-1">
-          <h2 className="text-base font-extrabold uppercase text-black">Monitored Mountain Corridors</h2>
-          <span className="text-xs text-gray-700 font-bold">5 ARTERIES</span>
+          <h3 className="text-base font-extrabold text-gray-900">
+            Mountain Corridors
+          </h3>
+          <span className="text-xs text-gray-500 font-medium">5 Main Arteries</span>
         </div>
 
         {corridorStatuses.map((corridor) => {
           const isExpanded = expandedCorridor === corridor.corridor;
 
           return (
-            <article key={corridor.corridor} className="bg-white rounded-xl shadow-[3px_3px_0px_#000] overflow-hidden border-2 border-black">
+            <article key={corridor.corridor} className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
               <button
                 type="button"
                 onClick={() => setExpandedCorridor(isExpanded ? null : corridor.corridor)}
-                className="w-full text-left p-3.5 flex flex-col gap-2 focus:outline-none cursor-pointer"
+                className="w-full text-left p-4 flex flex-col gap-2 focus:outline-none cursor-pointer hover:bg-gray-50/60"
               >
                 <div className="flex items-center justify-between gap-2">
-                  <span className={`text-xs px-2 py-0.5 rounded font-extrabold border border-black uppercase shrink-0 ${
-                    corridor.passable ? 'bg-emerald-100 text-emerald-900 border-emerald-500' : 'bg-red-600 text-white'
+                  <span className={`text-xs px-2.5 py-0.5 rounded-full font-extrabold shrink-0 ${
+                    corridor.passable ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'
                   }`}>
-                    {corridor.passable ? 'OPEN ✅' : 'BLOCKED ⛔'}
+                    {corridor.passable ? 'ROAD OPEN ✅' : 'ROAD BLOCKED ⛔'}
                   </span>
-                  <span className="text-xs text-gray-700 font-bold flex items-center gap-1">
+                  <span className="text-xs text-gray-400 font-medium flex items-center gap-1">
                     <span className="material-symbols-outlined text-[14px]">schedule</span>
-                    {new Date(corridor.lastReportTimestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • {corridor.activeHazardsCount} pings
+                    {new Date(corridor.lastReportTimestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between gap-2">
                   <div>
-                    <h3 className="text-sm font-extrabold text-black">{corridor.corridor}</h3>
-                    <p className="text-xs text-amber-900 font-bold mt-0.5">{corridor.summary}</p>
+                    <h4 className="text-base font-extrabold text-gray-900">{corridor.corridor}</h4>
+                    <p className="text-xs text-gray-600 font-medium mt-0.5">{corridor.summary}</p>
                   </div>
-                  <span className="material-symbols-outlined text-black font-extrabold">
+                  <span className="material-symbols-outlined text-gray-600 text-[24px] shrink-0">
                     {isExpanded ? 'expand_less' : 'expand_more'}
                   </span>
                 </div>
               </button>
 
               {isExpanded && (
-                <div className="px-3.5 pb-4 pt-1 flex flex-col gap-3 bg-surface-container-low border-t border-outline-variant/20">
-                  <div className="p-3 bg-surface-container rounded-lg flex flex-col gap-1.5">
+                <div className="px-4 pb-4 pt-1 flex flex-col gap-2.5 bg-gray-50/50 border-t border-gray-100">
+                  <div className="p-3 bg-white border border-gray-200 rounded-xl flex flex-col gap-1.5 shadow-sm">
                     <div className="flex items-center justify-between">
-                      <span className="font-label-sm text-label-sm text-primary font-extrabold uppercase flex items-center gap-1">
-                        <span className="material-symbols-outlined text-[16px]">smart_toy</span> Offline LLM Summary (Nepali)
+                      <span className="text-xs text-gray-700 font-bold uppercase flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[16px] text-amber-500">record_voice_over</span>
+                        Nepali Summary
                       </span>
                       <button
                         type="button"
                         onClick={() => speakSummary('पहिरोका कारण सडक पूर्ण रूपमा बन्द छ। गाडी घुम वा पङ्खाबारीबाट फर्काउनुहोला।')}
-                        className="p-1 text-primary hover:bg-surface rounded flex items-center gap-1 text-xs font-bold cursor-pointer"
+                        className="px-2.5 py-1 bg-amber-400 text-gray-900 rounded-lg flex items-center gap-1 text-xs font-bold hover:bg-amber-500 cursor-pointer"
                       >
-                        <span className="material-symbols-outlined text-[18px]">volume_up</span>
+                        <span className="material-symbols-outlined text-[16px]">volume_up</span>
+                        <span>Listen 🔊</span>
                       </button>
                     </div>
-                    <p className="font-headline-sm text-headline-sm text-on-surface leading-normal">
+                    <p className="text-sm font-bold text-gray-900">
                       "पहिरोका कारण सडक पूर्ण रूपमा बन्द छ। गाडी घुम वा पङ्खाबारीबाट फर्काउनुहोला।"
                     </p>
-                    <span className="font-body-sm text-body-sm text-on-surface-variant">
-                      Road severed completely. Divert light traffic via Pankhabari.
+                    <span className="text-xs text-gray-500">
+                      Road blocked by landslide. Divert via Pankhabari or Ghoom.
                     </span>
                   </div>
 
                   <button
                     type="button"
-                    onClick={() => triggerToast('Cached Incident Photo Loaded (480 KB ArrayBuffer)')}
-                    className="h-touch-target-min w-full bg-surface-container-highest text-on-surface rounded font-headline-sm text-headline-sm uppercase flex items-center justify-center gap-2 hover:bg-surface-variant cursor-pointer"
+                    onClick={() => triggerToast('Viewing Incident Photo...')}
+                    className="h-10 w-full bg-white text-gray-900 border border-gray-300 rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-gray-50 cursor-pointer shadow-sm"
                   >
-                    <span className="material-symbols-outlined text-[20px]">image</span>
-                    <span>View Cached Incident Photo (480 KB)</span>
+                    <span className="material-symbols-outlined text-[18px] text-blue-600">image</span>
+                    <span>View Road Incident Photo</span>
                   </button>
                 </div>
               )}
@@ -340,30 +310,8 @@ export const RouteStatusBoardScreen: React.FC<RouteStatusBoardScreenProps> = ({
           );
         })}
       </section>
-
-      {/* DBSCAN Spatial Clusters */}
-      <section className="flex flex-col gap-2 p-3 bg-surface-container-low rounded-xl shadow-sm border border-outline-variant/30">
-        <h3 className="font-headline-sm text-headline-sm uppercase tracking-tight text-on-surface flex items-center gap-1.5">
-          <span className="material-symbols-outlined text-primary text-[20px]">compass_calibration</span>
-          <span>Haversine DBSCAN Spatial Clusters (&epsilon; = 30m)</span>
-        </h3>
-
-        <div className="flex flex-col gap-2">
-          {clusters.map((c) => (
-            <div key={c.clusterId} className="p-2.5 bg-surface-container-lowest rounded-lg font-label-sm text-label-sm text-on-surface space-y-1">
-              <div className="flex items-center justify-between font-bold">
-                <span>📍 {c.locationName}</span>
-                <span className="px-1.5 py-0.5 bg-surface-container text-on-surface rounded text-[10px]">
-                  {c.reports.length} Reports
-                </span>
-              </div>
-              <p className="font-body-sm text-body-sm text-on-surface-variant">
-                {c.deduplicatedReport.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
     </div>
   );
 };
+
+

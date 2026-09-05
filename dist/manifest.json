@@ -3,6 +3,11 @@
   "name": "PahadSathi - Mountain Companion (पहाड साथी)",
   "icons": [
     {
+      "src": "/logo.jpg",
+      "type": "image/jpeg",
+      "sizes": "512x512"
+    },
+    {
       "src": "/icon-192.png",
       "type": "image/png",
       "sizes": "192x192"

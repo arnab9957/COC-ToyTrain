@@ -72,7 +72,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-on-background flex flex-col font-sans selection:bg-primary selection:text-on-primary">
+    <div className="min-h-screen bg-slate-100 text-black flex flex-col font-mono selection:bg-blue-600 selection:text-white">
       <Navbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -82,7 +82,7 @@ export function App() {
         storageFreePercent={92}
       />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-4 pt-20 pb-20">
+      <main className="flex-1 max-w-2xl w-full mx-auto px-3 pt-20 pb-24 flex flex-col gap-4">
         {activeTab === 'route-board' && (
           <RouteStatusBoardScreen
             inspections={inspections}
@@ -116,9 +116,10 @@ export function App() {
         )}
       </main>
 
-      <footer className="border-t border-surface-container-highest bg-surface py-3 px-4 text-center text-xs font-mono text-on-surface-variant">
-        <p>PahadSathi (पहाड साथी) — High-Altitude Tactical Resilience Offline PWA • Darjeeling Sector</p>
+      <footer className="border-t-2 border-black bg-white py-3 px-4 text-center text-xs font-mono text-gray-700 mb-16">
+        <p>PahadSathi (पहाड साथी) — Offline Emergency Hill Safety System • Darjeeling Sector</p>
       </footer>
     </div>
   );
 }
+

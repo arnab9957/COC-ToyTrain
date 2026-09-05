@@ -44,18 +44,17 @@ export const VoiceAlertBanner: React.FC<VoiceAlertBannerProps> = ({ language }) 
     const textToSpeak = getLocalizedAlertText(currentAlert);
     await playEmergencyVoiceAlert(textToSpeak, language);
 
-    // Auto reset playing animation after 8s
     setTimeout(() => setIsPlaying(false), 8000);
   };
 
   const handleRecordVoiceAlert = () => {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      alert('Microphone recording not supported on this browser.');
+      alert('Microphone recording is not supported on this browser.');
       return;
     }
 
     setIsRecording(true);
-    setToastMsg('🎙️ Recording 5s Voice Emergency Alert...');
+    setToastMsg('🎙️ Recording 5-second voice warning...');
 
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then((stream) => {
@@ -68,7 +67,7 @@ export const VoiceAlertBanner: React.FC<VoiceAlertBannerProps> = ({ language }) 
           const url = URL.createObjectURL(blob);
           setRecordedAudioUrl(url);
           setIsRecording(false);
-          setToastMsg('✅ Voice Note Recorded! Queued for Offline P2P Mesh Relay.');
+          setToastMsg('✅ Voice warning recorded and saved offline.');
           setTimeout(() => setToastMsg(null), 4000);
         };
 
@@ -84,29 +83,24 @@ export const VoiceAlertBanner: React.FC<VoiceAlertBannerProps> = ({ language }) 
   };
 
   return (
-    <section className="w-full bg-amber-50 border-2 border-black rounded-xl p-3.5 sm:p-4 shadow-[3px_3px_0px_#000] flex flex-col gap-3 font-mono">
-      {/* Header Row */}
+    <section className="w-full bg-amber-50 border border-amber-200 rounded-2xl p-4 shadow-sm flex flex-col gap-3 font-sans">
+      {/* Top Title & Alert Pills */}
       <div className="flex items-center justify-between gap-2 flex-wrap">
         <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-lg bg-amber-500 border-2 border-black flex items-center justify-center text-black font-extrabold shadow-[1.5px_1.5px_0px_#000] shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold shadow shrink-0">
             <span className="material-symbols-outlined text-[22px]">volume_up</span>
           </div>
-          <div className="flex flex-col">
-            <div className="flex items-center gap-2">
-              <span className="font-headline-sm text-sm sm:text-base text-black font-extrabold uppercase tracking-tight">
-                Recent Voice Alerts
-              </span>
-              <span className="px-1.5 py-0.5 bg-red-600 text-white text-[10px] rounded font-bold uppercase animate-pulse border border-black">
-                LIVE VOICE
-              </span>
-            </div>
-            <span className="text-[11px] text-gray-700 font-bold">
-              ध्वनि चेतावनी • Trilingual Offline Audio Beacon
-            </span>
+          <div>
+            <h2 className="text-base text-gray-900 font-extrabold tracking-tight">
+              Voice Alerts (ध्वनि सूचना)
+            </h2>
+            <p className="text-xs text-gray-600 font-medium">
+              Audio announcements in Nepali, Bengali, Hindi & English
+            </p>
           </div>
         </div>
 
-        {/* Next / Previous Alert Selector */}
+        {/* Alert Number Tabs */}
         <div className="flex items-center gap-1">
           {RECENT_VOICE_ALERTS.map((alert, idx) => (
             <button
@@ -117,10 +111,10 @@ export const VoiceAlertBanner: React.FC<VoiceAlertBannerProps> = ({ language }) 
                 stopEmergencyVoiceAlert();
                 setIsPlaying(false);
               }}
-              className={`px-2 py-1 text-xs rounded border-2 border-black font-bold transition-all cursor-pointer ${
+              className={`px-2.5 py-1 text-xs rounded-lg font-bold transition-all cursor-pointer ${
                 activeAlertIndex === idx
-                  ? 'bg-amber-400 text-black shadow-[1.5px_1.5px_0px_#000]'
-                  : 'bg-white text-gray-700 hover:bg-gray-100'
+                  ? 'bg-amber-500 text-white shadow-sm'
+                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
               }`}
             >
               Alert #{idx + 1}
@@ -129,82 +123,78 @@ export const VoiceAlertBanner: React.FC<VoiceAlertBannerProps> = ({ language }) 
         </div>
       </div>
 
-      {/* Voice Alert Content Card */}
-      <div className="p-3 bg-white border-2 border-black rounded-lg flex flex-col gap-2 shadow-[2px_2px_0px_#000]">
-        <div className="flex items-center justify-between text-xs text-gray-700">
-          <span className="font-extrabold text-black uppercase flex items-center gap-1">
-            <span className="material-symbols-outlined text-[16px] text-red-600">location_on</span>
+      {/* Voice Alert Text Box */}
+      <div className="p-3.5 bg-white border border-amber-200 rounded-xl flex flex-col gap-1.5 shadow-sm">
+        <div className="flex items-center justify-between text-xs text-gray-500 font-medium">
+          <span className="font-bold text-red-600 uppercase flex items-center gap-1">
+            <span className="material-symbols-outlined text-[16px]">location_on</span>
             {currentAlert.location}
           </span>
-          <span className="font-bold text-gray-500">
+          <span>
             {new Date(currentAlert.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </span>
         </div>
 
-        <p className="text-xs sm:text-sm font-bold text-black leading-relaxed">
+        <p className="text-sm sm:text-base font-bold text-gray-900 leading-snug">
           "{getLocalizedAlertText(currentAlert)}"
         </p>
 
-        {/* Audio Spectrum Wave Animation when playing */}
         {isPlaying && (
-          <div className="flex items-center gap-1 py-1.5 px-2 bg-amber-100 border border-amber-400 rounded">
-            <span className="text-[11px] font-bold text-amber-900">Broadcasting Audio Beacon:</span>
-            <div className="flex items-end gap-1 h-4 ml-auto">
+          <div className="flex items-center gap-2 mt-1 py-1.5 px-3 bg-amber-100/80 rounded-lg">
+            <span className="text-xs font-bold text-amber-900">🔊 Playing Voice Announcement...</span>
+            <div className="flex items-end gap-1 h-3.5 ml-auto">
               <span className="w-1 bg-amber-600 rounded-full animate-[bounce_0.6s_infinite_100ms] h-full" />
               <span className="w-1 bg-amber-600 rounded-full animate-[bounce_0.6s_infinite_200ms] h-2/3" />
               <span className="w-1 bg-amber-600 rounded-full animate-[bounce_0.6s_infinite_300ms] h-full" />
-              <span className="w-1 bg-amber-600 rounded-full animate-[bounce_0.6s_infinite_400ms] h-1/2" />
             </div>
           </div>
         )}
       </div>
 
-      {/* Action Controls: Play Audio & Record Voice Note */}
+      {/* Big Touch Buttons */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <button
           type="button"
           onClick={handlePlayVoiceAlert}
-          className={`h-12 px-3 flex items-center justify-center gap-2 rounded-lg font-mono text-xs uppercase font-extrabold border-2 border-black transition-all cursor-pointer ${
+          className={`h-11 px-4 flex items-center justify-center gap-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all cursor-pointer ${
             isPlaying
-              ? 'bg-red-600 text-white shadow-[2px_2px_0px_#000]'
-              : 'bg-amber-400 text-black shadow-[2.5px_2.5px_0px_#000] hover:bg-amber-500'
+              ? 'bg-red-600 text-white shadow-sm'
+              : 'bg-amber-400 text-gray-900 hover:bg-amber-500 shadow-sm active:scale-98'
           }`}
         >
           <span className="material-symbols-outlined text-[20px]">
             {isPlaying ? 'stop' : 'volume_up'}
           </span>
-          <span>{isPlaying ? 'STOP VOICE ALERT' : 'PLAY VOICE ALERT (🔊)'}</span>
+          <span>{isPlaying ? 'STOP VOICE' : 'PLAY VOICE ALERT 🔊'}</span>
         </button>
 
         <button
           type="button"
           onClick={handleRecordVoiceAlert}
           disabled={isRecording}
-          className={`h-12 px-3 flex items-center justify-center gap-2 rounded-lg font-mono text-xs uppercase font-extrabold border-2 border-black transition-all cursor-pointer ${
-            isRecording
-              ? 'bg-red-600 text-white animate-pulse'
-              : 'bg-white text-black shadow-[2.5px_2.5px_0px_#000] hover:bg-gray-100'
+          className={`h-11 px-4 flex items-center justify-center gap-2 rounded-xl text-xs sm:text-sm font-extrabold border border-gray-300 bg-white text-gray-900 hover:bg-gray-50 transition-all cursor-pointer ${
+            isRecording ? 'bg-red-600 text-white animate-pulse border-red-600' : ''
           }`}
         >
           <span className="material-symbols-outlined text-[20px] text-red-600">mic</span>
-          <span>{isRecording ? 'RECORDING 5S...' : 'RECORD VOICE WARNING'}</span>
+          <span>{isRecording ? 'RECORDING 5S...' : 'RECORD WARNING 🎙️'}</span>
         </button>
       </div>
 
-      {/* Recorded Voice Clip Preview */}
+      {/* Recorded Preview */}
       {recordedAudioUrl && (
-        <div className="p-2.5 bg-emerald-50 border-2 border-black rounded-lg flex items-center justify-between gap-2 text-xs">
+        <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-1.5 font-bold text-emerald-900 truncate">
             <span className="material-symbols-outlined text-[18px] text-emerald-700">graphic_eq</span>
-            <span className="truncate">Your Voice Alert Note Recorded (Ready for Mesh)</span>
+            <span className="truncate">Your Recorded Voice Alert (Ready offline)</span>
           </div>
-          <audio src={recordedAudioUrl} controls className="h-8 max-w-[160px]" />
+          <audio src={recordedAudioUrl} controls className="h-7 max-w-[150px]" />
         </div>
       )}
 
-      {/* Toast Notification */}
+      {/* Toast */}
       {toastMsg && (
-        <div className="p-2.5 bg-black text-white text-xs font-bold rounded-lg shadow-md border border-white flex items-center gap-2">
+        <div className="p-2.5 bg-gray-900 text-white text-xs font-bold rounded-xl shadow flex items-center gap-2">
           <span className="material-symbols-outlined text-amber-400 text-[18px]">info</span>
           <span>{toastMsg}</span>
         </div>
@@ -212,3 +202,5 @@ export const VoiceAlertBanner: React.FC<VoiceAlertBannerProps> = ({ language }) 
     </section>
   );
 };
+
+

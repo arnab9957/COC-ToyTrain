@@ -1,181 +1,299 @@
 # PahadSathi (पहाड साथी — "Mountain Companion")
 
-PahadSathi is an offline-first, highly resilient, decentralized Progressive Web App (PWA) designed to bridge critical communication gaps during monsoon landslide disasters in high-altitude highland regions like Darjeeling, Kalimpong, and Sikkim. 
+> **High-Altitude Tactical Resilience & Offline Landslide Emergency System**  
+> Designed for Darjeeling, Kalimpong, Kurseong, and Sikkim Highland Sectors.
 
-By treating **"no network" as a core product feature**, PahadSathi turns ordinary smartphones into collaborative, self-healing nodes in an ad-hoc local mesh. It provides real-time geotechnical hazard identification, offline route coordination, and emergency warning relays—operating entirely under strict **Airplane Mode (0% cellular connectivity, 0% internet)**.
+[![Offline First](https://img.shields.io/badge/Network-0%25%20Internet%20Required-success)](#) [![PWA](https://img.shields.io/badge/PWA-100%25%20Offline%20Capable-blue)](#) [![License](https://img.shields.io/badge/License-MIT-green)](#)
 
----
+PahadSathi (पहाड साथी) is an offline-first, decentralized Progressive Web App (PWA) built to bridge critical emergency communication gaps during severe monsoon landslides in high-altitude mountain regions. 
 
-## ⛰️ Key Problem Statements Addressed
-PahadSathi merges four challenging monsoonal crisis requirements into a single, high-fidelity, unified local system design:
-1. **B1. Offline Landslide Reporter & Last-Mile Alert Relay:** Captures on-device slope telemetry (tension cracks, seepage, bulging walls), runs real-time on-device classification/diagnostics, queues data locally, and relays official disaster alerts peer-to-peer.
-2. **B6. Road Status Mesh:** Crowdsources blockage reports (photos, GPS coordinates, timestamps, passability statuses) from stranded vehicles and taxi syndicates, propagating updates phone-to-phone to compile an **Offline Route Status Board**.
-3. **A6. Hotspot Mesh:** Supports collaborative AI and offline synchronization over ad-hoc local networks using serverless WebRTC data channels with visual QR-code handshake protocols.
-4. **C1. Gangman's Logbook:** Provides a specialized professional interface for railway track maintenance staff (Gangmen) patrolling the Darjeeling Himalayan Railway (DHR). Tracks slip severity, blocked drains, and wall conditions offline, generating a localized **Section-Wise Track Hazard Dashboard**.
+Operating under **0% cellular connectivity (Airplane Mode)**, PahadSathi turns ordinary smartphones into self-healing, peer-to-peer (P2P) nodes that identify geotechnical slope hazards, broadcast voice emergency alerts, and synchronize live road blockage updates phone-to-phone.
 
 ---
 
-## 🏗️ Layer-by-Layer Technical Architecture
+## 🗺️ System Flowcharts & Visual Architecture
 
-```
-==================================================================================================
-                                    PAHADSATHI SYSTEM TOPOLOGY
-==================================================================================================
+### 1. Overall System Architecture
+```mermaid
+flowchart TD
+    subgraph Client["📱 User Smartphone Node"]
+        A["📷 Camera / Sensors"] -->|Live Video Feed| B["🧠 Web Worker AI Engine"]
+        B -->|Detect Cracks / Seepage| C["💾 Dexie.js (IndexedDB)"]
+        C -->|Binary ArrayBuffers| D["🔄 Yjs CRDT Shared Map"]
+        D -->|P2P Sync Packets| E["📡 WebRTC Data Channel"]
+        F["🎙️ MediaRecorder / Web Audio"] -->|5s Audio Beacon| C
+    </div>
 
- [ getUserMedia Capture ] ---> [ Web Worker: MediaPipe Vision (TFLite MobileNet/EfficientDet) ]
-                                      |
-                                      v (Extracts Bounding Boxes of Cracks, Seepage, Rockfall)
-                                      |
- [ Dexie.js (IndexedDB) ] <---> [ WebGPU LlamaWeb (Llama 3.2 1B Instruct - q4f16_1) ]
-         |                            |
-         |                            v (Streams Hazard Assessments & Multilingual Notes)
-         |
-         +--> [ Offline State Sync via Yjs CRDT & Cellular Mesh WebRTC Data Channels ]
-         |         |
-         |         +-- (QR Visual SDP Exchange / Local Hotspot / WICG Local P2P API)
-         |
-         +--> [ PWA Service Worker (Background Sync on Geofenced Station Wi-Fi Gateway) ]
+    subgraph Peer["📱 Nearby Peer Smartphone"]
+        E <-->|Serverless WebRTC Mesh| G["📡 Peer WebRTC Data Channel"]
+        G -->|CRDT Auto-Merge| H["💾 Peer IndexedDB Storage"]
+        H -->|Render Status| I["🗺️ Offline Road Board"]
+    end
 ```
 
 ---
 
-## 🛠️ The Production-Ready Tech Stack
-
-### 1. Frontend Core & UI Frame (Craft Metric)
-*   **Vite + React (TypeScript):** Serves as our rapid compilation build tool, producing highly optimized chunk-splits to guarantee rapid loading times on budget smartphones.
-*   **Workbox (PWA Service Worker):** Configured with an aggressive **Cache-First** static caching strategy. Once downloaded, all static UI assets, local language JSON files, and ML model runtimes open instantly without triggering any network calls.
-*   **Neo-Brutalist CSS (Sunlight-Readable Theme):** Designed using custom high-contrast Tailwind utility themes (pure white backgrounds `#FFFFFF`, thick black structural borders `border-2 border-black`, and heavy black typography). This guarantees readability under direct, high-altitude highland sunlight and torrential rain.
-*   **Wet-Finger Ergonomics:** All buttons, toggles, and select options adhere to a strict minimum interactive touch target boundary of **56px × 56px**, ensuring reliable inputs with wet hands or inside shaking transit vehicles.
-
-### 2. Local Storage Layer (Resilient Offline Storage)
-*   **Dexie.js (IndexedDB Wrapper):** Manages local persistence. Raw IndexedDB transactions are highly verbose and prone to locking on older mobile browser engines; Dexie provides a clean, promise-based relational abstraction layer.
-*   **iOS ArrayBuffer Decoupling (The iOS Safari Blob Fix):** Storing raw binary `Blob` data inside IndexedDB causes silent transaction write errors on Safari. PahadSathi converts all photos captured via `getUserMedia` into **ArrayBuffers** before committing them to the storage database.
-*   **ITP Eviction Exemption:** On iOS Safari, Intelligent Tracking Prevention (ITP) automatically purges an origin's local storage (including IndexedDB) after 7 days of user inactivity. To preserve critical landslide datasets, the app prompts users to **"Add to Home Screen"** as an installed PWA, which permanently bypasses Safari's auto-eviction policy.
-
-### 3. On-Device Artificial Intelligence (Works Offline & AI Done Well Metrics)
-To bypass network latency, PahadSathi runs two highly distinct artificial intelligence pipelines directly inside the browser sandbox:
-
-*   **Geotechnical Object Detection Worker:**
-    *   **Runtime:** **MediaPipe Tasks for Web** initialized inside a background **Web Worker** thread to prevent screen freeze-ups and maintain rendering at a stable 60 FPS.
-    *   **Target Model:** Quantized 8-bit integer (**INT8**) **EfficientDet-Lite0** (~4.7 MB, consuming ~220 MB of local VRAM). It is trained to recognize and output bounding boxes for: `tension_crack`, `water_seepage`, `rockfall`, and `damaged_retaining_wall`.
-*   **Diagnostic SLM Engine:**
-    *   **Runtime:** **LlamaWeb (WebGPU `llama.cpp` browser port)** with **Transformers.js v4 (ONNX Runtime Web WASM + SIMD)** configured as an automatic hardware fallback.
-    *   **Target Model:** Quantized 4-bit **Llama-3.2-1B-Instruct** (`q4f16_1`).
-    *   **Memory Footprint Optimization:** By utilizing static VRAM pre-allocation at startup for compute buffers and compiled WebGPU WGSL shaders, the runtime limits total VRAM allocation to a static **900 MB**, keeping memory usage safely below Apple WebKit's strict system memory limits.
-    *   **OPFS Streaming Interface:** Model weights are stored inside the browser's native **Origin Private File System (OPFS)**. The Web Worker reads model files progressively via synchronized storage access handles, preventing the JavaScript heap from overflowing and crashing the browser tab.
+### 2. Trilingual Emergency Voice Alert Flow
+```mermaid
+flowchart LR
+    A["🔊 Emergency Trigger"] --> B{"Language Selected?"}
+    B -->|NE| C["🇳🇵 Nepali Speech Synthesis"]
+    B -->|BN| D["🇮🇳 Bengali Speech Synthesis"]
+    B -->|HI| E["🇮🇳 Hindi Speech Synthesis"]
+    B -->|EN| F["🇬🇧 English Speech Synthesis"]
+    
+    C & D & E & F --> G["🔊 Web Audio API 2-Tone Siren Beacon (800Hz / 1200Hz)"]
+    G --> H["🎙️ 5-Second Voice Recorder (MediaRecorder API)"]
+    H --> I["📦 Encoded WebM Audio Blob"]
+    I --> J["📲 Queued for Offline P2P Mesh Broadcast"]
+```
 
 ---
 
-## 📡 Air-Gapped WebRTC Mesh & P2P Warning Relay
+### 3. Serverless QR WebRTC Handshake (QWBP Protocol)
+```mermaid
+sequenceDiagram
+    autonumber
+    actor PhoneA as Phone A (Initiator)
+    actor PhoneB as Phone B (Receiver)
 
-When major monsoonal landslips collapse cellular towers, PahadSathi routes data directly between localized phone clusters over local Wi-Fi hotspots and manual WebRTC links.
-
-### 1. Visual Signaling (QR-Code SDP Exchange)
-Since standard WebRTC requires a signaling server to exchange Session Description Protocol (SDP) handshakes (~2.5 KB), it is traditionally impossible to initiate a connection offline. PahadSathi solves this with the **QR-WebRTC Bootstrap Protocol (QWBP)**:
-*   It strips unused audio/video VoIP streams and unused codecs, retaining only raw WebRTC Data Channels.
-*   Derives and shortens ICE credentials via HKDF-SHA256, compressing the entire handshake package down to **55–100 bytes**.
-*   This generates low-density, high-readability **Version 4 QR Codes** that can be scanned under severe monsoon conditions and low-light environments in under 0.5 seconds.
-
-### 2. Bypassing the mDNS Private IP Obfuscation Mask
-Modern browser security engines replace local IP addresses within ICE candidate arrays with randomized, non-resolvable UUID mDNS hostnames (e.g., `5a21-9d1c.local`). In an offline, ad-hoc Wi-Fi network with no local DNS server, these hostnames cannot resolve, causing direct connections to fail.
-*   **The PWA Bypass:** Before generating the signaling QR code, the PWA programmatically invokes **`navigator.mediaDevices.getUserMedia({ video: true })`**.
-*   **Why It Works:** Granting camera permission signals the browser's browser-engine security subsystem to establish temporary "trust elevation," prompting the ICE agent to unmask and expose raw local IPv4 addresses (e.g., `192.168.1.52`) within the SDP string, allowing peers to establish a direct connection immediately.
-
-### 3. Mesh Scalability (The Cellular Mesh Topology)
-Connecting every offline phone directly to every other phone in a full mesh scales quadratically (\\(O(N^2)\\)). At 50+ active peers, WebRTC signaling loops and buffer management will quickly overload mobile CPUs and exhaust battery charge.
-*   **Cellular Clustering:** PahadSathi dynamically partitions peers into logical local cells with a maximum size of **10 peers** (`cellSize = 10`).
-*   **Rendezvous Hashing:** Peer cell assignment is calculated deterministically client-side using **Highest Random Weight (HRW)** rendezvous hashing against a shared, cryptographic snapshot of the active user roster.
-*   **Bridges and Hop Routing:** The highest-ranked peer in each cell is elected as the **bridge node**. Cell bridges maintain connections with adjacent cell bridges to route updates. Every mesh packet is wrapped in a metadata header tracking client timestamps and **Time-To-Live (TTL)** decrement counters to prevent infinite routing loops across the highlands.
+    PhoneA->>PhoneA: Request Camera Permission (Unmask mDNS IPv4)
+    PhoneA->>PhoneA: Generate WebRTC Data Channel & SDP
+    PhoneA->>PhoneA: Compress SDP via HKDF-SHA256 (55-100 Bytes)
+    PhoneA->>PhoneA: Render Low-Density Version 4 QR Code
+    PhoneB->>PhoneA: Scan QR Code with Camera
+    PhoneB->>PhoneB: Decode SDP & Create Answer Package
+    PhoneB-->>PhoneA: Direct WebRTC Data Channel Connected!
+    PhoneA->>PhoneB: Stream ArrayBuffer Photos & Yjs CRDT Road Reports
+```
 
 ---
 
-## 🔒 Decentralised Security, State & Analytics
-
-### 1. Yjs CRDT State Synchronization
-To prevent state synchronization conflicts when multiple users are updating blockage events on the road status board out of order, the app relies on **Yjs** shared map and array CRDTs. 
-*   **Why Yjs over Automerge:** Automerge compiles its core engine from Rust to WASM, which is constrained by a 32-bit memory model capping it at 4GB. Its Git-like transactional model retains the entire document history, leading to massive memory footprints that risk crashing browser tabs on budget mobile devices. **Yjs** uses a flat linked-list (YATA algorithm) written in pure JavaScript, consuming up to 3x less memory and executing merges 10x to 50x faster, making it perfect to run concurrently with memory-intensive WebGPU models.
-*   **Asset Handshake Protocol:** To keep the CRDT document lightweight, raw photo assets are **never** stored inside the Yjs document. Instead, the shared map stores only the metadata containing the photo's SHA-256 hash. When Yjs synchronizes across WebRTC data channels, the devices cross-reference their local IndexedDB stores, identify missing hashes, and stream those binary photos out-of-band in chunked **64KB ArrayBuffers**.
-
-### 2. Zero-Trust Cryptographic Validation
-To prevent malicious actors from spoofing critical landslide locations or injecting false evacuation warnings to redirect mountain transit lanes, PahadSathi uses edge cryptography:
-*   On first launch, each device generates an on-device **Ed25519 cryptographic key pair**.
-*   When a report is generated, its core properties (`Geohash + Timestamp + Status + PhotoHash`) are signed using the private key.
-*   Receiving nodes verify the signature offline against the sender’s public key before merging the record into their local Yjs document. Tampered records are instantly dropped.
-
-### 3. Edge-Local Route Compiling (Spatial DBSCAN + Map-Reduce)
-Once a device accumulates hundreds of raw blockage reports from around the hills over WebRTC, it converts the raw data into a coherent status board using three client-side phases:
-
-1.  **Phase 1: Haversine DBSCAN Spatial Clustering:**
-    Using a search radius **\\(\epsilon = 30\text{ meters}\\)** and **\\(MinPts = 2\\)**, the client groups raw coordinates. Distances are calculated client-side using the geodesic Haversine formula:
-    \\[d_{\text{Haversine}} = 2R \arcsin\left(\sqrt{\sin^2\left(\frac{\Delta \phi}{2}\right) + \cos(\phi_1)\cos(\phi_2)\sin^2\left(\frac{\Delta \lambda}{2}\right)}\right)\\]
-    This isolates distinct physical blockages, separating a landslide at the *Paglajhora Sinking Zone* from an active debris wash at *Sevoke Road (NH-10)*.
-2.  **Phase 2: Jaccard Shingling Filter:**
-    Descriptions in each cluster are processed client-side into 3-character shingles. Redundant reports with a **Jaccard Similarity index \\(\ge 0.75\\)** are filtered out:
-    \\[J(A, B) = \frac{|A \cap B|}{|A \cup B|}\\]
-    Only the most textually descriptive report in each group is sent to the LLM context, reducing token usage and WebGPU computation by up to 80%.
-3.  **Phase 3: Map-Reduce LLM Summarization Engine:**
-    *   **Map Phase:** The local LLM processes each spatial cluster, generating a concise, 1-sentence state summary of that blockage.
-    *   **Reduce Phase:** The summaries are concatenated and sorted by transit corridor (NH-55, Rohini, Pankhabari, Sevoke Road). The LLM performs a final reduce prompt, resolves conflicting passability data by prioritizing the newest timestamp, and outputs a structured Markdown Status Board.
+### 4. Spatial Landslide Clustering & Road Board Flow
+```mermaid
+flowchart TD
+    A["📥 Raw P2P Road Hazard Reports"] --> B["📐 Haversine Distance Matrix Matrix (ε = 30m)"]
+    B --> C["📍 DBSCAN Spatial Clustering"]
+    C --> D["🔤 Jaccard Shingling Filter (Deduplicate Reports)"]
+    D --> E["📊 Categorize by Transit Corridor"]
+    E --> F["🔴 NH-55 Hill Cart Road"]
+    E --> G["🟠 Rohini Road"]
+    E --> H["🟢 Teesta Valley NH-10"]
+    F & G & H --> I["📱 Render Clean Offline Road Status Cards"]
+```
 
 ---
 
-## 📁 Core IndexedDB Relational Database Schema
+## 📦 Main Code Modules & Key Implementations
 
-```javascript
-// Dexie.js Schema Definition
-import Dexie from 'dexie';
+PahadSathi is organized into clean, decoupled TypeScript modules for maximum offline resilience and high readability:
 
-const db = new Dexie('PahadSathiDB');
+```
+src/
+├── analytics/
+│   └── dbscan.ts             # Haversine spatial clustering algorithm
+├── components/
+│   ├── CameraSLMScreen.tsx   # Camera AI geotechnical detector
+│   ├── GangmanPWayScreen.tsx # DHR Railway Gangman track hazard logbook
+│   ├── Navbar.tsx            # Neo-Brutalist navigation header & bottom tabs
+│   ├── P2PMeshRelayScreen.tsx# WebRTC QR P2P handshake & peer roster
+│   ├── RouteStatusBoardScreen.tsx # Main Mountain Road Status Board
+│   ├── StorageDiagnosticsScreen.tsx # Vault & IndexedDB diagnostic telemetry
+│   └── VoiceAlertBanner.tsx  # Trilingual Voice Emergency Alert player & recorder
+├── db/
+│   └── schema.ts             # Dexie.js (IndexedDB) schema & initial seeds
+├── services/
+│   ├── aiDiagnosticEngine.ts # Quantized SLM / MediaPipe diagnostic engine
+│   ├── crypto.ts             # On-device Ed25519 payload signing
+│   ├── meshSync.ts           # Yjs CRDT map & WebRTC Mesh sync manager
+│   └── voiceAlertService.ts  # Web Audio siren beacon & Speech Synthesis engine
+├── types/
+│   └── index.ts              # System TypeScript interfaces & types
+├── App.tsx                   # Main layout container & tab manager
+└── main.tsx                  # PWA Service Worker registration entrypoint
+```
 
-db.version(1).stores({
-  // Stores the high-level geological telemetry metadata
-  inspections: 'id, geohash, timestamp, status, signature, authorPublicKey, hazardCoefficient, llmSummary',
-  
-  // Decoupled raw binary assets to prevent transaction blocking
-  binaryAssets: 'photoHash, timestamp', // photoHash maps to a record containing raw ArrayBuffer
-  
-  // Tracks pending database operations that must sync when online
-  syncQueue: 'id, timestamp, operationType, payload'
+---
+
+### 1. Voice Emergency Alert Service (`src/services/voiceAlertService.ts`)
+Generates 2-tone emergency siren beacons (800Hz / 1200Hz) via the native **Web Audio API** and streams localized speech announcements in Nepali, Bengali, Hindi, and English:
+
+```typescript
+// Web Audio 2-Tone Siren Generator
+export function playEmergencyBeaconTone(): Promise<void> {
+  return new Promise((resolve) => {
+    const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.4);
+
+    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.8);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.8);
+    setTimeout(() => {
+      audioCtx.close();
+      resolve();
+    }, 850);
+  });
+}
+```
+
+---
+
+### 2. Voice Alert Banner Component (`src/components/VoiceAlertBanner.tsx`)
+Provides 1-tap emergency audio announcements and a 5-second **MediaRecorder** offline voice note recorder:
+
+```typescript
+const handleRecordVoiceAlert = () => {
+  navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+    const recorder = new MediaRecorder(stream);
+    const chunks: Blob[] = [];
+
+    recorder.ondataavailable = (e) => chunks.push(e.data);
+    recorder.onstop = () => {
+      const blob = new Blob(chunks, { type: 'audio/webm' });
+      const url = URL.createObjectURL(blob);
+      setRecordedAudioUrl(url);
+      setToastMsg('✅ Voice warning recorded and saved offline.');
+    };
+
+    recorder.start();
+    setTimeout(() => recorder.stop(), 5000); // 5-second voice note limit
+  });
+};
+```
+
+---
+
+### 3. Dexie.js Offline Database Schema (`src/db/schema.ts`)
+Decouples binary assets into raw **ArrayBuffers** to prevent transaction locks on mobile Safari browsers:
+
+```typescript
+import Dexie, { type Table } from 'dexie';
+
+export class PahadSathiDatabase extends Dexie {
+  inspections!: Table<InspectionRecord>;
+  binaryAssets!: Table<{ photoHash: string; data: ArrayBuffer; contentType: string }>;
+
+  constructor() {
+    super('PahadSathiDB');
+    this.version(1).stores({
+      inspections: 'id, corridor, locationName, timestamp, passable, photoHash, verified',
+      binaryAssets: 'photoHash'
+    });
+  }
+}
+```
+
+---
+
+### 4. Haversine DBSCAN Spatial Clustering (`src/analytics/dbscan.ts`)
+Groups raw GPS coordinates into isolated landslide hotspots (e.g. separating *Paglajhora Sinking Zone* from *Sevoke Road*):
+
+```typescript
+// Haversine distance calculation in meters
+export function haversineDistanceMeters(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371000; // Earth radius in meters
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+```
+
+---
+
+### 5. Yjs CRDT & WebRTC Sync (`src/services/meshSync.ts`)
+Manages conflict-free replicated data types (CRDTs) to auto-merge blockage reports out of order across peer phones:
+
+```typescript
+import * as Y from 'yjs';
+
+export const ydoc = new Y.Doc();
+export const yRoadStatusMap = ydoc.getMap<InspectionRecord>('roadStatusMap');
+
+// Real-time observer automatically updates UI components on peer sync
+yRoadStatusMap.observe(() => {
+  console.log('Yjs CRDT state synchronized with peer devices!');
 });
 ```
 
 ---
 
-## 🗺️ Localized Darjeeling Geographical Coordinate Boundaries
+## 🛠️ Tech Stack Overview
 
-To ensure absolute contextual accuracy under the **Belonging (15%)** judging criteria, PahadSathi's local database is pre-seeded with bounding coordinate boxes and names of the region's most vulnerable landslide zones:
-
-*   **Paglajhora Sinking Zone (NH-55):** `[26.8920° N, 88.2612° E]` — Crucial corridor linking Kurseong and Siliguri.
-*   **Tindharia Slopes:** `[26.8524° N, 88.3315° E]` — Site of frequent DHR railway track washouts.
-*   **Balasun River Dudhia Bridge:** `[26.8205° N, 88.2241° E]` — Vital bridge structure vulnerable to swelling mountain torrents.
-*   **Sevoke Sinking Zone (NH-10):** `[26.8995° N, 88.4352° E]` — Main lifeline route connecting Kalimpong and Sikkim to Siliguri.
-
----
-
-## 🏆 Presentation Stage Live Demo Protocol
-
-To secure maximum points for the **Works Offline (25% Weight)** criterion, execute your presentation demo on stage using three highly visual steps:
-
-### Step 1: Prove Absolute Air-Gap
-1.  Take two separate mobile phones on stage. 
-2.  Enable **Airplane Mode** on both devices and verify that there is no cell connection or global internet connectivity.
-3.  Power on a battery-operated travel router (or establish a local Wi-Fi Hotspot on a 3rd mock device) with **no WAN ethernet line attached** [58, Setup]. Connect both mobile phones to this local, disconnected network.
-
-### Step 2: Live Geotechnical Inspection & Local Diagnostic
-1.  Open PahadSathi on Phone 1. Trigger the camera viewfinder and scan a printed prop of a slope tension crack [58, Setup].
-2.  Show the judges the immediate bounding box detection appearing over the crack at 60 FPS [58, Setup].
-3.  Watch the WebGPU LlamaWeb instance stream the geological hazard assessment and localized safety guidelines, showing that the diagnostic is translated dynamically into **Nepali (नेपाली)** [58, Setup].
-
-### Step 3: Serverless QR Synchronization
-1.  Click "Generate QWBP Sync QR" on Phone 1. Point Phone 2's camera at the screen [58, Setup].
-2.  Watch the WebRTC data channel bind immediately through the visual compressed SDP exchange [58, Setup].
-3.  Observe the logged landslide report, GPS coordinate tag, and raw photos propagate instantly to Phone 2's database, updating its **Offline Route Status Board** in under 3 seconds with **zero bytes touched by the global internet** [58, Setup].
+| Category | Technology | Purpose |
+|---|---|---|
+| **Core Framework** | React 18 + TypeScript | Component-driven, type-safe UI architecture |
+| **Build Tool** | Vite 5 | Rapid compilation and chunk splitting |
+| **Styling** | Tailwind CSS + Google Fonts | Clean typography and responsive design |
+| **Offline Database**| Dexie.js (IndexedDB) | Relational client-side data persistence |
+| **CRDT Sync** | Yjs Shared Maps | Conflict-free P2P state synchronization |
+| **Networking** | WebRTC Data Channels | Serverless phone-to-phone data streaming |
+| **Voice Audio** | Web Audio API + SpeechSynthesis | Dual-tone siren beacons and trilingual TTS |
+| **PWA Service Worker**| Custom Service Worker (`pahadsathi-v2`) | Network-First offline caching strategy |
 
 ---
 
-## 🚀 Future Roadmap & Advanced Edge Features
+## 🚀 Quick Start Guide
 
-1.  **Background Fetch PWA APIs:** Integrating system-level background download management to let users queue heavy Llama models over weak cell signals without keeping the active browser tab open.
-2.  **Chirp Audio Handshake Signaling:** Developing Web Audio synthesizers to modulate SDP handshake strings into high-frequency acoustic chirps, allowing connection pairing when camera lenses are fogged or broken.
-3.  **Content Indexing API:** Pushing received landslide bulletins directly into the browser's native offline discovery sections, making warnings visible even when the browser tab is closed.
-4.  **Service Worker Keep-Alive:** Registering the generative LLM process inside the persistent Service Worker to keep model weights warm in GPU memory during tab switches.
+### Prerequisites
+- Node.js `v18.0.0` or higher
+- `npm` or `yarn`
+
+### 1. Installation
+```bash
+# Clone repository
+git clone https://github.com/arnab9957/COC-ToyTrain.git
+cd COC-ToyTrain
+
+# Install dependencies
+npm install
+```
+
+### 2. Run Development Server
+```bash
+npm run dev
+```
+Open **`http://localhost:3000`** in your web browser.
+
+### 3. Build Production Bundle
+```bash
+npm run build
+```
+
+### 4. Run Station Gateway Server (Optional)
+```bash
+npm run server
+```
+Launches the local station Wi-Fi gateway server on `http://localhost:8080`.
+
+---
+
+## 🏔️ Monitored Mountain Corridors
+
+1. **NH-55 (Hill Cart Road):** `[26.8920° N, 88.2612° E]` — Kurseong to Siliguri lifeline.
+2. **Rohini Road:** `[26.8524° N, 88.3315° E]` — Major bypass route to Darjeeling.
+3. **Pankhabari Road:** `[26.8205° N, 88.2241° E]` — Steep alternate emergency descent route.
+4. **Teesta Valley (NH-10):** `[26.8995° N, 88.4352° E]` — Kalimpong & Sikkim arterial highway.
+5. **Dudhia Balasun Bridge:** `[26.8120° N, 88.2110° E]` — Critical low-altitude bridge crossing.
+
+---
+
+## 📄 License
+Distributed under the MIT License. See `LICENSE` for details.
+
+---
+*PahadSathi (पहाड साथी) — Building High-Altitude Tactical Resilience for Mountain Communities.*
+
