@@ -40,3 +40,7 @@ Thumbs.db
 # Temporary / Artifact files
 public/UI.zip
 scratch/
+
+.vercel
+
+public/stitch_pahadsathi_offline_emergency_ui

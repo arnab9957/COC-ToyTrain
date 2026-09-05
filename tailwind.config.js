@@ -56,9 +56,38 @@ export default {
         "on-primary-container": "#eeefff",
         "background": "#f9f9f9"
       },
+      borderRadius: {
+        DEFAULT: "0.25rem",
+        sm: "0.125rem",
+        md: "0.375rem",
+        lg: "0.5rem",
+        xl: "0.75rem",
+        "2xl": "1rem",
+        "3xl": "1.5rem",
+        full: "9999px"
+      },
+      spacing: {
+        "stroke-lg": "3px",
+        "stroke-sm": "2px",
+        "gutter-tablet": "1.5rem",
+        "gap-default": "1rem",
+        "touch-target-min": "3.5rem",
+        "offset-sm": "3px",
+        "gap-expanded": "1.5rem",
+        "gutter-mobile": "1rem",
+        "gutter-desktop": "2rem",
+        "offset-lg": "4px",
+        "gap-compact": "0.5rem",
+        "gap-gap-compact": "0.5rem",
+        "gap-gap-default": "1rem",
+        "gap-gap-expanded": "1.5rem",
+        "px-gutter-mobile": "1rem"
+      },
       fontFamily: {
         "display": ["Space Grotesk", "sans-serif"],
+        "display-mobile": ["Space Grotesk", "sans-serif"],
         "headline-lg": ["Space Grotesk", "sans-serif"],
+        "headline-lg-mobile": ["Space Grotesk", "sans-serif"],
         "headline-md": ["Space Grotesk", "sans-serif"],
         "headline-sm": ["Space Grotesk", "sans-serif"],
         "body-lg": ["JetBrains Mono", "monospace"],
@@ -67,6 +96,20 @@ export default {
         "label-lg": ["JetBrains Mono", "monospace"],
         "label-md": ["JetBrains Mono", "monospace"],
         "label-sm": ["JetBrains Mono", "monospace"]
+      },
+      fontSize: {
+        "display": ["40px", { lineHeight: "44px", letterSpacing: "-0.03em", fontWeight: "800" }],
+        "display-mobile": ["30px", { lineHeight: "34px", letterSpacing: "-0.02em", fontWeight: "800" }],
+        "headline-lg": ["32px", { lineHeight: "38px", letterSpacing: "-0.02em", fontWeight: "700" }],
+        "headline-lg-mobile": ["24px", { lineHeight: "30px", letterSpacing: "-0.01em", fontWeight: "700" }],
+        "headline-md": ["20px", { lineHeight: "26px", letterSpacing: "-0.01em", fontWeight: "700" }],
+        "headline-sm": ["18px", { lineHeight: "24px", letterSpacing: "0em", fontWeight: "700" }],
+        "body-lg": ["16px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "500" }],
+        "body-md": ["14px", { lineHeight: "20px", letterSpacing: "0em", fontWeight: "500" }],
+        "body-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.01em", fontWeight: "400" }],
+        "label-lg": ["14px", { lineHeight: "18px", letterSpacing: "0.05em", fontWeight: "700" }],
+        "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0.08em", fontWeight: "700" }],
+        "label-sm": ["10px", { lineHeight: "14px", letterSpacing: "0.1em", fontWeight: "800" }]
       }
     }
   },

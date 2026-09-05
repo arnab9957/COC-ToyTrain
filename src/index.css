@@ -5,6 +5,55 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .bg-surface { background-color: #f9f9f9; }
+  .bg-surface-container-lowest { background-color: #ffffff; }
+  .bg-surface-container-low { background-color: #f3f3f3; }
+  .bg-surface-container { background-color: #eeeeee; }
+  .bg-surface-container-high { background-color: #e8e8e8; }
+  .bg-surface-container-highest { background-color: #e2e2e2; }
+  .bg-surface-variant { background-color: #e2e2e2; }
+  .bg-surface-bright { background-color: #f9f9f9; }
+  
+  .text-on-surface { color: #1b1b1b; }
+  .text-on-surface-variant { color: #434655; }
+  .text-surface { color: #f9f9f9; }
+  .text-surface-bright { color: #f9f9f9; }
+  .text-surface-variant { color: #e2e2e2; }
+  .text-surface-container-lowest { color: #ffffff; }
+  
+  .bg-primary { background-color: #004ac6; }
+  .bg-primary-container { background-color: #2563eb; }
+  .text-primary { color: #004ac6; }
+  .text-on-primary { color: #ffffff; }
+  .text-primary-fixed { color: #dbe1ff; }
+  .bg-primary-fixed { background-color: #dbe1ff; }
+  
+  .bg-secondary { background-color: #a73a00; }
+  .bg-secondary-container { background-color: #fd651e; }
+  .bg-secondary-fixed { background-color: #ffdbce; }
+  .text-secondary { color: #a73a00; }
+  .text-on-secondary { color: #ffffff; }
+  .text-on-secondary-container { color: #571a00; }
+  .text-on-secondary-fixed { color: #370e00; }
+  .text-on-secondary-fixed-variant { color: #7f2b00; }
+  
+  .bg-tertiary { background-color: #006329; }
+  .bg-tertiary-container { background-color: #007f36; }
+  .text-tertiary { color: #006329; }
+  .text-on-tertiary { color: #ffffff; }
+  .text-on-tertiary-container { color: #c7ffca; }
+  .text-tertiary-fixed { color: #7ffc97; }
+  
+  .bg-error { background-color: #ba1a1a; }
+  .bg-error-container { background-color: #ffdad6; }
+  .text-error { color: #ba1a1a; }
+  .text-on-error { color: #ffffff; }
+  .text-on-error-container { color: #93000a; }
+
+  .border-outline-variant { border-color: #c3c6d7; }
+}
+
 :root {
   --bg-surface: #f9f9f9;
   --bg-surface-lowest: #ffffff;
@@ -24,9 +73,6 @@
   --color-tertiary-container: #007f36;
   --color-error: #ba1a1a;
   --color-error-container: #ffdad6;
-  
-  --border-tactical: 2px solid #000000;
-  --shadow-tactical: 3px 3px 0px #000000;
 }
 
 * {
@@ -47,7 +93,7 @@ body {
 }
 
 /* Space Grotesk for Headlines */
-h1, h2, h3, h4, h5, h6, .font-space {
+h1, h2, h3, h4, h5, h6, .font-space, .font-headline-sm, .font-headline-md, .font-headline-lg {
   font-family: 'Space Grotesk', sans-serif;
   letter-spacing: -0.02em;
   font-weight: 700;
@@ -67,107 +113,6 @@ h1, h2, h3, h4, h5, h6, .font-space {
   word-wrap: normal;
   direction: ltr;
   -webkit-font-smoothing: antialiased;
-}
-
-/* High-Altitude Tactical Neo-Brutalist Card */
-.tactical-card {
-  background: #ffffff;
-  border: 2px solid #000000;
-  box-shadow: 3px 3px 0px #000000;
-  border-radius: 8px;
-  padding: 1rem;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.tactical-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 4px 4px 0px #000000;
-}
-
-/* Tactical Buttons (Minimum 56px Touch Target) */
-.tactical-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-height: 56px;
-  padding: 0.75rem 1.25rem;
-  border: 2px solid #000000;
-  box-shadow: 3px 3px 0px #000000;
-  border-radius: 8px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 800;
-  font-size: 0.95rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  cursor: pointer;
-  user-select: none;
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.tactical-btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0px #000000;
-}
-
-.tactical-btn-primary {
-  background-color: #2563eb;
-  color: #ffffff;
-}
-
-.tactical-btn-secondary {
-  background-color: #fd651e;
-  color: #ffffff;
-}
-
-.tactical-btn-tertiary {
-  background-color: #007f36;
-  color: #ffffff;
-}
-
-.tactical-btn-error {
-  background-color: #ba1a1a;
-  color: #ffffff;
-}
-
-.tactical-btn-neutral {
-  background-color: #ffffff;
-  color: #1b1b1b;
-}
-
-/* Tactical Badges */
-.tactical-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.25rem 0.5rem;
-  border: 1.5px solid #000000;
-  border-radius: 4px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.badge-critical {
-  background: #ffdad6;
-  color: #93000a;
-}
-
-.badge-warning {
-  background: #ffdbce;
-  color: #571a00;
-}
-
-.badge-safe {
-  background: #c7ffca;
-  color: #002109;
-}
-
-.badge-info {
-  background: #dbe1ff;
-  color: #00174b;
 }
 
 /* Pulse animation for live mesh telemetry */
@@ -200,3 +145,4 @@ h1, h2, h3, h4, h5, h6, .font-space {
 ::-webkit-scrollbar {
   display: none;
 }
+

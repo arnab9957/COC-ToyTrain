@@ -17,74 +17,92 @@ export const Navbar: React.FC<NavbarProps> = ({
   setActiveTab,
   language,
   setLanguage,
-  meshPeersCount
+  meshPeersCount,
+  storageFreePercent
 }) => {
   return (
     <>
-      {/* Top Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 h-16 bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-2xl mx-auto h-full px-4 flex items-center justify-between gap-3">
-          {/* Logo & App Title */}
-          <div className="flex items-center gap-2.5 min-w-0">
-            <img
-              src="/logo.jpg"
-              alt="PahadSathi Logo"
-              style={{
-                width: '36px',
-                height: '36px',
-                minWidth: '36px',
-                minHeight: '36px',
-                maxWidth: '36px',
-                maxHeight: '36px',
-                objectFit: 'cover',
-                borderRadius: '10px'
-              }}
-              className="border border-gray-300 shadow-sm shrink-0"
-            />
-            <div className="flex flex-col min-w-0">
-              <div className="flex items-center gap-1.5 leading-none">
-                <span className="font-sans text-base text-gray-900 font-extrabold tracking-tight truncate">
-                  PahadSathi
-                </span>
-                <span className="px-1.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-sans border border-emerald-300 rounded-full font-bold uppercase shrink-0">
-                  OFFLINE
+      {/* Top Header matching Stitch UI design */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.06)] border-b border-outline-variant/30">
+        <div className="max-w-2xl mx-auto h-24 px-4 flex flex-col justify-between py-2">
+          {/* Top Row: Logo & Profile Status */}
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <img
+                src="/logo.jpg"
+                alt="PahadSathi Emblem"
+                style={{
+                  width: '36px',
+                  height: '36px',
+                  minWidth: '36px',
+                  minHeight: '36px',
+                  maxWidth: '36px',
+                  maxHeight: '36px',
+                  objectFit: 'cover',
+                  borderRadius: '8px'
+                }}
+                className="shadow-sm shrink-0 border border-black/10"
+              />
+              <div className="flex flex-col truncate">
+                <div className="flex items-center gap-1.5 leading-none">
+                  <span className="font-headline-sm text-base text-on-surface uppercase tracking-tight font-extrabold">
+                    PahadSathi
+                  </span>
+                  <span className="px-1.5 py-0.5 bg-on-surface text-surface-container-lowest font-label-sm text-[10px] rounded font-bold uppercase">
+                    OFFLINE PWA
+                  </span>
+                </div>
+                <span className="font-body-sm text-[11px] text-on-surface-variant font-bold truncate mt-0.5">
+                  पहाड साथी • DARJEELING SECTOR
                 </span>
               </div>
-              <span className="text-[11px] text-gray-500 font-medium font-sans truncate mt-0.5">
-                पहाड साथी • Hill Safety Navigation
-              </span>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm">
+                <span className="material-symbols-outlined text-[18px]">person</span>
+              </div>
             </div>
           </div>
 
-          {/* Language Selector */}
-          <div className="flex items-center gap-2 shrink-0">
-            <div className="relative">
+          {/* Bottom Row: Language Selector, Mesh Status, Storage Status */}
+          <div className="flex items-center justify-between gap-2">
+            <div className="relative flex items-center">
               <select
                 value={language.toLowerCase()}
                 onChange={(e) => setLanguage(e.target.value.toUpperCase() as Language)}
-                className="h-9 pl-2.5 pr-7 bg-amber-50 text-gray-900 text-xs font-sans font-bold rounded-lg border border-amber-300 appearance-none outline-none cursor-pointer shadow-sm focus:ring-2 focus:ring-amber-400"
+                className="h-7 pl-2 pr-6 bg-surface-container-lowest text-on-surface font-label-md text-xs rounded border border-outline-variant/40 appearance-none outline-none cursor-pointer font-bold shadow-sm"
               >
-                <option value="ne">🇳🇵 नेपाली</option>
-                <option value="bn">🇮🇳 বাংলা</option>
-                <option value="hi">🇮🇳 हिन्दी</option>
-                <option value="en">🇬🇧 English</option>
+                <option value="ne">नेपाली (Nepali)</option>
+                <option value="bn">বাংলা (Bengali)</option>
+                <option value="hi">हिन्दी (Hindi)</option>
+                <option value="en">English</option>
               </select>
-              <span className="material-symbols-outlined absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none text-[18px] text-gray-700">
+              <span className="material-symbols-outlined absolute right-1 pointer-events-none text-[16px] text-on-surface">
                 expand_more
               </span>
+            </div>
+
+            <div className="flex items-center gap-1.5 px-2 py-0.5 bg-on-surface text-surface-container-lowest rounded shrink-0">
+              <span className="w-2 h-2 rounded-full bg-secondary-container animate-pulse" />
+              <span className="font-label-sm text-[11px] uppercase font-bold">⚡ MESH: {meshPeersCount} PEERS</span>
+            </div>
+
+            <div className="flex items-center gap-1 px-2 py-0.5 bg-tertiary-container text-on-tertiary-container rounded shrink-0 font-bold text-[11px]">
+              <span>💾 {storageFreePercent}% FREE</span>
             </div>
           </div>
         </div>
       </header>
 
       {/* Bottom Navigation Bar */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 h-16 bg-white border-t border-gray-200 shadow-lg">
-        <div className="max-w-2xl mx-auto flex items-center justify-around h-full px-2">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 h-16 bg-surface-container-lowest border-t border-outline-variant/40 shadow-[0_-2px_10px_rgba(0,0,0,0.06)]">
+        <div className="max-w-2xl mx-auto flex items-center justify-around h-full px-1">
           {[
             { id: 'route-board', label: 'Road Status', icon: 'map' },
             { id: 'geo-camera', label: 'Camera AI', icon: 'photo_camera' },
-            { id: 'p2p-mesh', label: 'Mesh', icon: 'hub' },
-            { id: 'gangman-log', label: 'Field Log', icon: 'engineering' },
+            { id: 'p2p-mesh', label: 'Mesh Relay', icon: 'hub' },
+            { id: 'gangman-log', label: 'Gangman Log', icon: 'engineering' },
             { id: 'vault-diagnostics', label: 'Vault', icon: 'storage' }
           ].map((item) => {
             const isActive = activeTab === item.id;
@@ -92,18 +110,14 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id as TabMode)}
-                className={`flex flex-col items-center justify-center flex-1 h-full py-1.5 transition-all cursor-pointer ${
+                className={`flex flex-col items-center justify-center flex-1 h-full py-1 transition-all cursor-pointer ${
                   isActive
-                    ? 'text-blue-600 font-bold'
-                    : 'text-gray-500 hover:text-gray-900'
+                    ? 'text-primary font-extrabold border-t-2 border-primary bg-primary/5'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low'
                 }`}
               >
-                <div className={`flex items-center justify-center px-3 py-0.5 rounded-full transition-all ${
-                  isActive ? 'bg-blue-100 text-blue-700' : ''
-                }`}>
-                  <span className="material-symbols-outlined text-[22px]">{item.icon}</span>
-                </div>
-                <span className="text-[10px] font-sans mt-0.5 font-bold tracking-tight">
+                <span className={`material-symbols-outlined ${isActive ? 'text-[24px]' : 'text-[22px]'}`}>{item.icon}</span>
+                <span className="font-label-sm text-[10px] mt-0.5 font-bold uppercase tracking-tight">
                   {item.label}
                 </span>
               </button>
@@ -114,6 +128,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     </>
   );
 };
+
 
 
 
