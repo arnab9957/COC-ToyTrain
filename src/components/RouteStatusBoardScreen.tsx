@@ -140,10 +140,13 @@ export const RouteStatusBoardScreen: React.FC<RouteStatusBoardScreenProps> = ({
   });
 
   return (
-    <div className="flex flex-col w-full gap-gap-default">
-      {/* Sub-Header Status Bar */}
+    <div className="flex flex-col w-full gap-4 font-mono">
+      {/* 1. Recent Trilingual Voice Alert Component */}
+      <VoiceAlertBanner language={language} />
+
+      {/* 2. Sub-Header Status Bar */}
       <section className="flex flex-col gap-1.5 p-3.5 bg-white border-2 border-black rounded-xl shadow-[3px_3px_0px_#000]">
-        <div className="flex items-center justify-between gap-2 flex-wrap font-mono">
+        <div className="flex items-center justify-between gap-2 flex-wrap">
           <div className="flex items-center gap-2 min-w-0">
             <span className="material-symbols-outlined text-blue-600 text-[22px] shrink-0">map</span>
             <h1 className="text-base font-extrabold uppercase text-black truncate">
@@ -155,7 +158,7 @@ export const RouteStatusBoardScreen: React.FC<RouteStatusBoardScreenProps> = ({
             <span>LIVE P2P MESH</span>
           </div>
         </div>
-        <div className="flex items-center justify-between text-xs font-mono text-gray-700 pt-1.5 border-t border-gray-200">
+        <div className="flex items-center justify-between text-xs text-gray-700 pt-1.5 border-t border-gray-200">
           <span className="truncate">Active Peer: <strong className="text-black font-bold">GTA-942</strong> (3m ago)</span>
           <span className="shrink-0 text-emerald-700 font-bold flex items-center gap-1">
             <span className="material-symbols-outlined text-[16px]">offline_bolt</span>
@@ -164,10 +167,7 @@ export const RouteStatusBoardScreen: React.FC<RouteStatusBoardScreenProps> = ({
         </div>
       </section>
 
-      {/* Recent Trilingual Voice Alert Component */}
-      <VoiceAlertBanner language={language} />
-
-      {/* High Risk Emergency Alert Box */}
+      {/* 3. High Risk Emergency Alert Box */}
       {!alertAcknowledged && (
         <section className="flex flex-col bg-red-600 text-white rounded-xl p-4 shadow-[3px_3px_0px_#000] border-2 border-black">
           <div className="flex items-start gap-3">
@@ -219,74 +219,74 @@ export const RouteStatusBoardScreen: React.FC<RouteStatusBoardScreenProps> = ({
       )}
 
       {/* Vector Ridge Pass Map Container */}
-      <section className="flex flex-col bg-surface-container-low rounded-xl overflow-hidden shadow-sm border border-outline-variant/30">
-        <div className="p-3 bg-surface-container flex items-center justify-between">
+      <section className="flex flex-col bg-white rounded-xl overflow-hidden border-2 border-black shadow-[3px_3px_0px_#000]">
+        <div className="p-3 bg-gray-100 border-b-2 border-black flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary text-[20px]">terrain</span>
-            <span className="font-headline-sm text-headline-sm uppercase tracking-tight text-on-surface">Ridge Pass Vectors</span>
+            <span className="material-symbols-outlined text-blue-600 text-[20px]">terrain</span>
+            <span className="font-extrabold uppercase tracking-tight text-black text-sm">Mountain Pass Ridge Map</span>
           </div>
-          <span className="font-label-sm text-label-sm px-2 py-0.5 bg-surface-container-lowest text-on-surface-variant rounded font-bold">
+          <span className="text-xs px-2 py-0.5 bg-white border border-black text-black rounded font-bold">
             1,420 GeoTiles Cached
           </span>
         </div>
 
-        <div className="relative w-full h-56 bg-surface-container-highest overflow-hidden">
+        <div className="relative w-full h-56 bg-gray-200 overflow-hidden">
           <canvas ref={canvasRef} width={358} height={224} className="w-full h-full block cursor-grab" />
           
-          <div className="absolute top-2 left-2 pointer-events-none bg-surface-container-lowest/90 backdrop-blur px-2 py-1 rounded shadow-sm">
-            <p className="font-label-sm text-label-sm text-on-surface uppercase font-bold">Darjeeling - Siliguri Ridge Vector</p>
-            <p className="font-body-sm text-body-sm text-on-surface-variant">Elev: 2,042m • GPS Mode: Inertial Mesh</p>
+          <div className="absolute top-2 left-2 pointer-events-none bg-white/95 backdrop-blur px-2.5 py-1 rounded-lg border-2 border-black shadow-[1.5px_1.5px_0px_#000]">
+            <p className="text-xs text-black uppercase font-extrabold">Darjeeling - Siliguri Ridge Vector</p>
+            <p className="text-[11px] text-gray-700 font-bold">Elev: 2,042m • GPS Mode: Inertial Mesh</p>
           </div>
 
           <div className="absolute right-2 bottom-2 flex flex-col gap-1.5 z-10">
             <button
               type="button"
               onClick={() => setZoomLevel((z) => Math.min(2, z + 0.2))}
-              className="w-12 h-12 bg-surface-container-lowest text-on-surface rounded shadow-md flex items-center justify-center active:scale-95 transition-all text-[22px] font-bold cursor-pointer"
+              className="w-10 h-10 bg-white text-black border-2 border-black rounded-lg shadow-[2px_2px_0px_#000] flex items-center justify-center active:scale-95 transition-all text-[20px] font-extrabold cursor-pointer"
             >
               +
             </button>
             <button
               type="button"
               onClick={() => setZoomLevel((z) => Math.max(0.6, z - 0.2))}
-              className="w-12 h-12 bg-surface-container-lowest text-on-surface rounded shadow-md flex items-center justify-center active:scale-95 transition-all text-[22px] font-bold cursor-pointer"
+              className="w-10 h-10 bg-white text-black border-2 border-black rounded-lg shadow-[2px_2px_0px_#000] flex items-center justify-center active:scale-95 transition-all text-[20px] font-extrabold cursor-pointer"
             >
               -
             </button>
           </div>
 
-          <div className="absolute left-2 bottom-2 bg-surface-container-lowest/90 backdrop-blur px-2 py-1 rounded text-on-surface font-label-sm text-label-sm flex items-center gap-2">
-            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-error" /> Blocked</span>
-            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-secondary-container" /> Caution</span>
-            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-tertiary" /> Open</span>
+          <div className="absolute left-2 bottom-2 bg-white/95 border border-black px-2 py-1 rounded text-black text-xs font-bold flex items-center gap-2">
+            <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-red-600 border border-black" /> Blocked</span>
+            <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-amber-500 border border-black" /> Caution</span>
+            <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-emerald-600 border border-black" /> Open</span>
           </div>
         </div>
       </section>
 
       {/* Corridor Status Feed */}
-      <section className="flex flex-col gap-2">
+      <section className="flex flex-col gap-2.5">
         <div className="flex items-center justify-between px-1">
-          <h2 className="font-headline-sm text-headline-sm uppercase tracking-tight text-on-surface">Corridor Status Feed</h2>
-          <span className="font-label-sm text-label-sm text-on-surface-variant font-bold">5 MONITORED ARTERIES</span>
+          <h2 className="text-base font-extrabold uppercase text-black">Monitored Mountain Corridors</h2>
+          <span className="text-xs text-gray-700 font-bold">5 ARTERIES</span>
         </div>
 
         {corridorStatuses.map((corridor) => {
           const isExpanded = expandedCorridor === corridor.corridor;
 
           return (
-            <article key={corridor.corridor} className="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-outline-variant/30">
+            <article key={corridor.corridor} className="bg-white rounded-xl shadow-[3px_3px_0px_#000] overflow-hidden border-2 border-black">
               <button
                 type="button"
                 onClick={() => setExpandedCorridor(isExpanded ? null : corridor.corridor)}
                 className="w-full text-left p-3.5 flex flex-col gap-2 focus:outline-none cursor-pointer"
               >
                 <div className="flex items-center justify-between gap-2">
-                  <span className={`font-label-md text-label-md px-2 py-0.5 rounded font-bold uppercase shrink-0 ${
-                    corridor.passable ? 'bg-tertiary-container text-on-tertiary-container' : 'bg-error text-on-error'
+                  <span className={`text-xs px-2 py-0.5 rounded font-extrabold border border-black uppercase shrink-0 ${
+                    corridor.passable ? 'bg-emerald-100 text-emerald-900 border-emerald-500' : 'bg-red-600 text-white'
                   }`}>
-                    {corridor.passable ? 'OPEN' : 'BLOCKED'}
+                    {corridor.passable ? 'OPEN ✅' : 'BLOCKED ⛔'}
                   </span>
-                  <span className="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+                  <span className="text-xs text-gray-700 font-bold flex items-center gap-1">
                     <span className="material-symbols-outlined text-[14px]">schedule</span>
                     {new Date(corridor.lastReportTimestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • {corridor.activeHazardsCount} pings
                   </span>
@@ -294,10 +294,10 @@ export const RouteStatusBoardScreen: React.FC<RouteStatusBoardScreenProps> = ({
 
                 <div className="flex items-center justify-between gap-2">
                   <div>
-                    <h3 className="font-headline-md text-headline-md text-on-surface">{corridor.corridor}</h3>
-                    <p className="font-body-sm text-body-sm text-secondary font-bold mt-0.5">{corridor.summary}</p>
+                    <h3 className="text-sm font-extrabold text-black">{corridor.corridor}</h3>
+                    <p className="text-xs text-amber-900 font-bold mt-0.5">{corridor.summary}</p>
                   </div>
-                  <span className="material-symbols-outlined text-on-surface-variant">
+                  <span className="material-symbols-outlined text-black font-extrabold">
                     {isExpanded ? 'expand_less' : 'expand_more'}
                   </span>
                 </div>
