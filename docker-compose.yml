@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  pahadsathi-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pahadsathi_station_gateway
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - NODE_ENV=production
+      - STATION_NAME=Ghoom_Railway_Station_Gateway

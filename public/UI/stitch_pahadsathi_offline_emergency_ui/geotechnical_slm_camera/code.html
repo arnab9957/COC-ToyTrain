@@ -1,0 +1,246 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><title>PahadSathi - Offline Transit PWA</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;family=Space+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#f9f9f9;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-error-container": "#93000a", "on-error": "#ffffff", "outline": "#737686", "on-secondary-fixed": "#370e00", "on-surface": "#1b1b1b", "on-tertiary-container": "#c7ffca", "secondary-fixed-dim": "#ffb599", "surface-container-high": "#e8e8e8", "primary-container": "#2563eb", "primary-fixed": "#dbe1ff", "primary": "#004ac6", "on-secondary": "#ffffff", "on-secondary-container": "#571a00", "tertiary": "#006329", "surface-bright": "#f9f9f9", "surface-variant": "#e2e2e2", "surface-container-lowest": "#ffffff", "surface": "#f9f9f9", "on-primary-fixed": "#00174b", "on-tertiary": "#ffffff", "secondary-container": "#fd651e", "error": "#ba1a1a", "inverse-primary": "#b4c5ff", "primary-fixed-dim": "#b4c5ff", "error-container": "#ffdad6", "tertiary-fixed-dim": "#62df7d", "inverse-surface": "#303030", "on-primary": "#ffffff", "surface-container-low": "#f3f3f3", "tertiary-fixed": "#7ffc97", "on-secondary-fixed-variant": "#7f2b00", "surface-tint": "#0053db", "on-surface-variant": "#434655", "secondary": "#a73a00", "on-tertiary-fixed": "#002109", "surface-container-highest": "#e2e2e2", "inverse-on-surface": "#f1f1f1", "on-background": "#1b1b1b", "outline-variant": "#c3c6d7", "secondary-fixed": "#ffdbce", "on-primary-fixed-variant": "#003ea8", "surface-container": "#eeeeee", "on-tertiary-fixed-variant": "#005320", "surface-dim": "#dadada", "tertiary-container": "#007f36", "on-primary-container": "#eeefff", "background": "#f9f9f9" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "stroke-lg": "3px", "stroke-sm": "2px", "gutter-tablet": "1.5rem", "gap-default": "1rem", "touch-target-min": "3.5rem", "offset-sm": "3px", "gap-expanded": "1.5rem", "gutter-mobile": "1rem", "gutter-desktop": "2rem", "offset-lg": "4px", "gap-compact": "0.5rem" }, "fontFamily": { "display-mobile": ["Space Grotesk"], "headline-sm": ["Space Grotesk"], "label-sm": ["JetBrains Mono"], "body-sm": ["JetBrains Mono"], "body-lg": ["JetBrains Mono"], "display": ["Space Grotesk"], "headline-lg": ["Space Grotesk"], "label-lg": ["JetBrains Mono"], "body-md": ["JetBrains Mono"], "headline-md": ["Space Grotesk"], "headline-lg-mobile": ["Space Grotesk"], "label-md": ["JetBrains Mono"] }, "fontSize": { "display-mobile": ["30px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "800" }], "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "700" }], "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.1em", "fontWeight": "800" }], "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "500" }], "display": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "800" }], "headline-lg": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "0.05em", "fontWeight": "700" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }], "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-lg-mobile": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "700" }] } } } };</script></head><body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen selection:bg-primary selection:text-on-primary"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-28 px-gutter-mobile flex flex-col justify-between py-gap-compact"><div class="flex items-center justify-between gap-gap-compact"><div class="flex items-center gap-gap-compact min-w-0"><img alt="PahadSathi Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UHDk2TvEr0jwUDiCNTt8Fw58MBt-iXjeeG0hcyaUeITyqMoTqoRaxKJyylybzNqollpSq44BLu4-n6cAypoojAHNLbvb3do7kEawz5zddb_4PYcpPUVtPX5OKDds__ZxB8lq8HlekZWsdY5qYofwEAQXblrh0I2R3rlvy_t5mMidgjqCIw4XoWk5jibyAXVgxsUUhEP9duyM09iaCkvwuZo5t-OdCedOYhue0sXuvtBkrXuOP_uIuVL7g"><div class="flex flex-col truncate"><div class="flex items-center gap-1.5"><span class="font-headline-sm text-headline-sm text-on-surface uppercase tracking-tight font-extrabold">PahadSathi</span><span class="px-1 py-0.5 bg-on-surface text-surface-container-lowest font-label-sm text-label-sm rounded">OFFLINE PWA</span></div><span class="font-body-sm text-body-sm text-on-surface-variant font-bold">पहाड साथी • DARJEELING SECTOR</span></div></div><div class="flex items-center gap-gap-compact shrink-0"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div><div class="flex items-center justify-between gap-gap-compact overflow-x-auto no-scrollbar"><div class="relative flex items-center"><select class="h-7 pl-2 pr-6 bg-surface-container-lowest text-on-surface font-label-md text-label-md rounded appearance-none outline-none cursor-pointer"><option value="ne">नेपाली (Nepali)</option><option value="bn">বাংলা (Bengali)</option><option value="hi">हिन्दी (Hindi)</option><option selected="" value="en">English</option></select><span class="material-symbols-outlined absolute right-1 pointer-events-none text-[16px] text-on-surface">expand_more</span></div><div class="flex items-center gap-1.5 px-2 py-0.5 bg-on-surface text-surface-container-lowest rounded shrink-0"><span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span><span class="font-label-sm text-label-sm uppercase">⚡ MESH: 8 PEERS</span></div><div class="flex items-center gap-1 px-2 py-0.5 bg-tertiary-container text-on-tertiary-container rounded shrink-0"><span class="font-label-sm text-label-sm uppercase font-bold">💾 92% FREE</span></div></div></div></header><main class="flex flex-col relative w-full px-gutter-mobile pt-28 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full gap-gap-default">
+<!-- Operational Mode / Viewfinder Header -->
+<div class="flex items-center justify-between px-3 py-2 bg-surface-container-highest shadow-sm rounded-lg">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-3 h-3 rounded-full bg-secondary animate-ping"></span>
+<span class="font-headline-sm text-headline-sm text-on-surface uppercase tracking-tight truncate">
+        Slope Anomaly Geotechnical Monitor
+      </span>
+</div>
+<div class="flex items-center gap-1.5 px-2 py-1 bg-secondary text-on-secondary rounded text-label-sm font-label-sm uppercase font-bold shrink-0">
+<span class="material-symbols-outlined text-[16px]">videocam</span>
+<span class="">REC [EDGE-CV]</span>
+</div>
+</div>
+<!-- High-Contrast Tactical Camera Viewfinder Console -->
+<div class="relative w-full rounded-xl overflow-hidden bg-on-surface shadow-md aspect-[4/3] flex flex-col justify-between p-3 select-none">
+<!-- Background Simulated Video Feed Placeholder -->
+<div class="absolute inset-0 bg-cover bg-center opacity-85" data-alt="Steep mountain slope near Darjeeling showing exposed unstable dark soil, fragmented mudstone, and a sharp lateral tension fracture fissure with subtle trickles of mountain groundwater under heavy overcast monsoon daylight. Highly realistic geotechnical disaster photography." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC7TP8p8pAjj6j5NTVwluPw37IqSM_Dwk1Wh6HkvEBStwtJ0f8S7oKu51FlYxSJ9V4hkme-uuhpzwBsdF2PsDV9X1rkUIivw-XECHPdZp741z6d44DOeZssQU4mpgQny9LVBMGeSLQrKCD8UZtUPTpjmY5fp1yjOLmStmxZXiw1wSgdOgcKa1jM9qPzo_4118zclqoM-69xGd4OS6GcjQvOXtrE9CMJzoPU-tdDS74mbVjMOvI4UDhR')">
+</div>
+<!-- Dark Gradient Protection Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/90 via-transparent to-on-surface/75 pointer-events-none"></div>
+<!-- HUD Overlay Top: Gyro Pitch/Roll & Telemetry Coordinates -->
+<div class="relative z-10 flex items-start justify-between text-surface gap-2">
+<div class="flex flex-col gap-1 bg-on-surface/85 backdrop-blur-md px-2.5 py-1.5 rounded-lg shadow-sm">
+<div class="flex items-center gap-1 text-label-sm font-label-sm text-secondary-fixed">
+<span class="material-symbols-outlined text-[14px]">explore</span>
+<span class="font-bold">SLOPE ANGLE: 42° INCLINE</span>
+</div>
+<div class="font-label-sm text-label-sm tracking-wider text-surface-variant font-mono">
+          ROLL: -3.4° | PITCH: +41.8°
+        </div>
+</div>
+<div class="flex flex-col items-end gap-1 bg-on-surface/85 backdrop-blur-md px-2.5 py-1.5 rounded-lg shadow-sm text-right">
+<div class="flex items-center gap-1 text-label-sm font-label-sm text-tertiary-fixed">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed animate-pulse"></span>
+<span class="font-bold">GPS RTK LOCK</span>
+</div>
+<div class="font-label-sm text-label-sm text-surface-variant font-mono">
+          26.9014° N • 88.2624° E
+        </div>
+<div class="font-label-sm text-label-sm text-surface-bright font-mono font-bold">
+          ALT: 2,134M AMSL
+        </div>
+</div>
+</div>
+<!-- Center HUD Viewfinder Target Reticle & ML Bounding Box -->
+<div class="relative z-10 my-auto w-full flex items-center justify-center">
+<!-- Crosshair Centering Glyphs -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40">
+<svg class="w-full h-full max-h-48" fill="none" stroke="currentColor" viewBox="0 0 320 200">
+<!-- Horizon line -->
+<line stroke="#FFFFFF" stroke-dasharray="4 4" stroke-width="2" x1="20" x2="80" y1="100" y2="100"></line>
+<line stroke="#FFFFFF" stroke-dasharray="4 4" stroke-width="2" x1="240" x2="300" y1="100" y2="100"></line>
+<!-- Vertical center ticks -->
+<line stroke="#FFFFFF" stroke-width="2" x1="160" x2="160" y1="20" y2="40"></line>
+<line stroke="#FFFFFF" stroke-width="2" x1="160" x2="160" y1="160" y2="180"></line>
+<!-- Pitch ladders -->
+<line stroke="#FFFFFF" stroke-width="1.5" x1="140" x2="180" y1="70" y2="70"></line>
+<line stroke="#FFFFFF" stroke-width="1.5" x1="145" x2="175" y1="130" y2="130"></line>
+</svg>
+</div>
+<!-- Real-time MediaPipe CV Tension Crack Anomaly Bounding Frame -->
+<div class="w-5/6 max-w-sm rounded-lg p-2.5 shadow-lg bg-secondary-container/20 backdrop-blur-[2px] transform transition-transform animate-pulse flex flex-col justify-between">
+<div class="flex items-center justify-between gap-1">
+<div class="flex items-center gap-1.5 px-2 py-0.5 bg-secondary-container text-on-secondary rounded text-label-sm font-label-sm font-extrabold uppercase shadow">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+<span class="">Tension Crack Detected</span>
+</div>
+<span class="px-1.5 py-0.5 bg-on-surface text-surface text-label-sm font-label-sm font-mono font-bold rounded">
+            CONF: 89.4%
+          </span>
+</div>
+<div class="h-16 flex items-center justify-center">
+<div class="px-2 py-1 bg-on-surface/90 rounded text-label-sm font-label-sm text-secondary-fixed font-mono text-center">
+            EST. FISSURE DEPTH: ~14cm | SEEPAGE: HIGH
+          </div>
+</div>
+<div class="flex items-center justify-between text-label-sm font-label-sm text-surface font-mono">
+<span class="">EDGE-TRACK: ID #829</span>
+<span class="text-tertiary-fixed">CV-TFLITE ACTIVE</span>
+</div>
+</div>
+</div>
+<!-- HUD Overlay Bottom: Shutter Button & Micro Previews -->
+<div class="relative z-10 flex items-center justify-between pt-2">
+<!-- Last Buffered Frame Thumbnail -->
+<div class="flex items-center gap-2 bg-on-surface/85 px-2 py-1.5 rounded-lg shadow-sm">
+<div class="w-10 h-10 rounded overflow-hidden bg-surface-container-high shrink-0">
+<img class="w-full h-full object-cover" data-alt="Macro telemetry photograph of hillside rock fractures with mud saturation indicators along Himalayan road cuttings." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQVQb29HFnthkaVbfa4dub8Xg37kkrUBUGTUj4sZozrR5MDD5EvJ8sT00gOnDZeSLqaDVxCKuRI-2JHRfSXO8gbq948VXrfmb83H4tl_Ftt9VdkUXA5dzUVq40LDPs_BrD3jou36lSuIewRymrZTHX1ZhTQwGvs0bUKeUwg2Muk4tvdgHfB3XgEaxL1zd5hiJCbDLnLAwIqphEzrofHqyo3LbL7QyVDMTaI9mJ8qe9AYbMrRCY_xEa">
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-surface-bright font-bold uppercase">Cached Frame</span>
+<span class="font-label-sm text-label-sm text-surface-variant font-mono">14:02:08 NPT</span>
+</div>
+</div>
+<!-- Tactile Shutter Trigger Button (56px+ / 64px physical target) -->
+<button aria-label="Capture Geotechnical Telemetry Image" class="w-16 h-16 rounded-full bg-surface-container-lowest flex items-center justify-center shadow-lg active:scale-95 transition-transform cursor-pointer focus:outline-none focus:ring-4 focus:ring-primary" id="shutterBtn" type="button">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary shadow-sm">
+<span class="material-symbols-outlined text-[28px]">photo_camera</span>
+</div>
+</button>
+<!-- Lens / Inference Switcher -->
+<button class="flex flex-col items-center justify-center w-11 h-11 rounded-lg bg-on-surface/85 text-surface-bright shadow-sm active:bg-on-surface" type="button">
+<span class="material-symbols-outlined text-[20px]">flip_camera_android</span>
+<span class="font-label-sm text-[9px] uppercase tracking-tighter">0.5x Ultra</span>
+</button>
+</div>
+</div>
+<!-- On-Device SLM Diagnostic Engine Runtime Telemetry Bar -->
+<div class="flex flex-col gap-2 p-3 bg-surface-container-low rounded-xl shadow-sm"><div class="flex items-center justify-between flex-wrap gap-1"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[18px] text-tertiary">memory</span><span class="font-headline-sm text-headline-sm text-on-surface">Edge Intelligence Engine</span></div><div class="flex items-center gap-1 px-2 py-0.5 bg-surface-container text-on-surface rounded text-label-sm font-label-sm font-mono"><span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span><span class="font-bold">WebGPU [ACTIVE]</span></div></div><div class="flex items-center gap-1.5 px-2.5 py-1 bg-secondary-container/20 rounded font-label-sm text-label-sm text-secondary font-bold"><span class="material-symbols-outlined text-[15px] text-secondary">local_fire_department</span><span class="">WARM RESIDENT IN GPU RAM (0s Cold Start Delay on Tab Reopen)</span></div><div class="flex flex-col gap-1 p-2 bg-surface-container-lowest rounded-lg"><div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface"><span class="font-bold uppercase text-primary">ENGINE ARCHITECTURE: ServiceWorkerMLCEngine</span><span class="font-mono text-tertiary font-bold">Tab-Independent Daemon</span></div><p class="font-label-sm text-label-sm text-on-surface-variant font-mono">keepAliveMs: 15,000ms Ping Loop Active • WebGPU Allocation Locked in Background Worker</p></div><div class="flex flex-col gap-1"><div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant"><span class="">Llama-3.2-1B-Instruct (INT4 Quantized)</span><span class="font-mono text-on-surface font-bold">820 MB / OPFS Cached</span></div><div class="w-full bg-surface-container-high h-2.5 rounded overflow-hidden flex"><div class="bg-primary h-full w-full rounded transition-all duration-500"></div></div></div><div class="flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant pt-1"><div class="flex items-center gap-1"><span class="material-symbols-outlined text-[15px] text-primary">swap_calls</span><span class="">FALLBACK: Transformers.js CPU-WASM</span></div><span class="px-1.5 py-0.5 bg-surface-container-high text-on-surface font-bold rounded">STANDBY OK</span></div><button class="w-full mt-1 py-2 px-3 bg-surface-container-high hover:text-on-surface text-on-surface font-label-sm text-label-sm uppercase font-bold rounded-lg flex items-center justify-center gap-2 active:scale-95 transition-transform cursor-pointer" onclick="alert('Simulated Browser Tab Crash: ServiceWorker keeps WebGPU context hot in RAM! Zero reload required.')" type="button"><span class="material-symbols-outlined text-[16px] text-error">restart_alt</span><span class="">SIMULATE TAB CRASH &amp; INSTANT RESUME</span></button></div>
+<!-- Interactive AI Geotechnical Diagnostic Stream Output -->
+<div class="flex flex-col gap-2.5 p-3.5 bg-surface-container-low rounded-xl shadow-sm"><div class="flex items-center justify-between flex-wrap gap-1"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[18px] text-primary">cloud_download</span><span class="font-headline-sm text-headline-sm text-on-surface">Background Fetch API Provisioning</span></div><span class="px-2 py-0.5 bg-tertiary-container text-on-tertiary-container rounded font-label-sm text-label-sm font-bold uppercase">UNBREAKABLE</span></div><p class="font-body-sm text-body-sm text-on-surface-variant">System-Level Download Manager (Android/Chromium Notification Tray Integration)</p><div class="flex flex-col gap-2 bg-surface-container-lowest p-2.5 rounded-lg"><div class="flex flex-col gap-1"><div class="flex items-center justify-between font-label-sm text-label-sm"><span class="font-bold text-on-surface">Llama-3.2-1B-Instruct (820 MB)</span><span class="font-mono text-tertiary font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">check_circle</span> Complete in OPFS</span></div><div class="w-full bg-surface-container h-1.5 rounded overflow-hidden flex"><div class="bg-tertiary h-full w-full rounded"></div></div><span class="font-label-sm text-label-sm text-on-surface-variant font-mono">via BackgroundFetchRegistration</span></div><div class="flex flex-col gap-1 pt-1"><div class="flex items-center justify-between font-label-sm text-label-sm"><span class="font-bold text-on-surface">MediaPipe Geotech Rock Classifier (48 MB)</span><span class="font-mono text-secondary font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[14px] animate-pulse">downloading</span> 78% Complete</span></div><div class="w-full bg-surface-container h-1.5 rounded overflow-hidden flex"><div class="bg-secondary h-full rounded transition-all duration-500" style="width: 78%;"></div></div><span class="font-label-sm text-label-sm text-on-surface-variant font-mono">Downloading in OS Background • Survives tab close, screen lock &amp; 3G packet drops</span></div></div><button class="w-full py-2.5 px-3 bg-surface-container-highest hover:bg-surface-container text-on-surface font-label-sm text-label-sm uppercase font-bold rounded-lg flex items-center justify-center gap-2 active:scale-95 transition-transform cursor-pointer" onclick="alert('Background Fetch Registration initialized with Android OS notification manager.')" type="button"><span class="material-symbols-outlined text-[16px] text-primary">add_to_photos</span><span class="">PROVISION NEW REGIONAL GEOTECH WEIGHTS (BACKGROUND FETCH)</span></button></div><div class="flex flex-col bg-surface-container-lowest rounded-xl p-4 shadow-md gap-3">
+<!-- Diagnostic Header & Latency Indicator -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-secondary-container text-on-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface uppercase leading-none">SLM Synthesis</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono mt-0.5">LOCAL RUNTIME • 18 TOKENS/SEC</span>
+</div>
+</div>
+<span class="px-2 py-1 bg-error-container text-on-error-container font-label-sm text-label-sm font-extrabold rounded">
+        CRITICAL HAZARD
+      </span>
+</div>
+<!-- Bilingual Inference Output Content -->
+<div class="flex flex-col gap-2 p-3 bg-surface-container-low rounded-lg">
+<!-- Nepali Advisory Section -->
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center gap-1 text-error font-headline-sm text-headline-sm font-bold">
+<span class="material-symbols-outlined text-[18px]">report_problem</span>
+<span class="">चेतावनी (Tension Crack Warning)</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+          यस भिरालो जमिनमा ८९.४% यकिनता सहित गम्भीर चिरा (Tension Crack) पत्ता लागेको छ। नजिकै पानी चुहिएको देखिएकाले पहिरो जाने उच्च जोखिम छ। भल तर्काउने कुलो तत्काल बनाउनुहोस्।
+        </p>
+</div>
+<!-- English Geotechnical Summary -->
+<div class="pt-2">
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+<strong class="text-on-surface">Geotech Analysis:</strong> Active groundwater seepage near the shear plane promotes pore-water liquefaction. Translational soil slippage risk is rated <span class="text-error font-bold">SEVERE</span> along Kurseong NH-110 transit corridor.
+        </p>
+</div>
+</div>
+<!-- Actionable Field Safety Protocol Chips -->
+<div class="flex flex-col gap-1.5">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase font-bold">Immediate Safety Directives:</span>
+<div class="flex flex-wrap gap-1.5">
+<button class="flex items-center gap-1.5 px-3 py-2 bg-secondary-container text-on-secondary rounded-lg font-label-sm text-label-sm font-bold shadow-sm active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[16px]">alt_route</span>
+<span class="">DIVERT RUNOFF</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-2 bg-error text-on-error rounded-lg font-label-sm text-label-sm font-bold shadow-sm active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[16px]">no_crash</span>
+<span class="">EVACUATE DOWNSLOPE ROAD</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-2 bg-primary text-on-primary rounded-lg font-label-sm text-label-sm font-bold shadow-sm active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[16px]">cell_tower</span>
+<span class="">BROADCAST TO MESH PEERS</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Primary Mission-Critical Action Dispatch Buttons -->
+<div class="flex flex-col gap-2.5 pt-1 pb-4">
+<!-- Primary 56px Tactile Queue Button -->
+<button class="w-full min-h-[56px] px-4 py-3 bg-primary text-on-primary font-headline-sm text-headline-sm uppercase rounded-xl flex items-center justify-center gap-3 shadow-md active:translate-y-1 active:shadow-sm transition-all focus:outline-none" id="saveOfflineBtn" type="button">
+<span class="material-symbols-outlined text-[24px]">save</span>
+<span class="">Save &amp; Queue to Offline Vault (IDB)</span>
+</button>
+<!-- Secondary P2P Peer Dispatch Action -->
+<button class="w-full min-h-[56px] px-4 py-3 bg-surface-container-lowest text-on-surface font-headline-sm text-headline-sm uppercase rounded-xl flex items-center justify-center gap-3 shadow-sm active:bg-surface-container active:translate-y-0.5 transition-all focus:outline-none" id="dispatchPeerBtn" type="button">
+<span class="material-symbols-outlined text-[24px] text-secondary">wifi_tethering</span>
+<span class="">Direct P2P Dispatch to Kurseong Gangman</span>
+</button>
+</div>
+<!-- Micro Toast Notification Element for Offline Persistence Delight -->
+<div class="fixed bottom-24 left-4 right-4 z-50 transform translate-y-32 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3 p-4 bg-on-surface text-surface-bright rounded-xl shadow-xl" id="tactileToast">
+<div class="w-8 h-8 rounded-full bg-tertiary flex items-center justify-center text-on-tertiary shrink-0">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<span class="font-headline-sm text-headline-sm uppercase">Record Committed to Vault</span>
+<span class="font-body-sm text-body-sm text-surface-variant truncate">Hash: 0x8F32C • Queued for BLE Mesh Relay</span>
+</div>
+</div>
+</div>
+<script>
+  // Micro-interactions and Tactile Feedback for Edge Field Operators
+  (function() {
+    const saveBtn = document.getElementById('saveOfflineBtn');
+    const dispatchBtn = document.getElementById('dispatchPeerBtn');
+    const shutterBtn = document.getElementById('shutterBtn');
+    const toast = document.getElementById('tactileToast');
+
+    function triggerToast(title, subtitle) {
+      if (!toast) return;
+      if (title) {
+        const titleEl = toast.querySelector('.font-headline-sm');
+        if (titleEl) titleEl.textContent = title;
+      }
+      if (subtitle) {
+        const subEl = toast.querySelector('.font-body-sm');
+        if (subEl) subEl.textContent = subtitle;
+      }
+
+      toast.classList.remove('translate-y-32', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      if (navigator.vibrate) {
+        navigator.vibrate([40, 30, 40]);
+      }
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-32', 'opacity-0');
+      }, 3200);
+    }
+
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        triggerToast('Queued in IndexedDB', 'Telemetry payload encrypted & saved locally');
+      });
+    }
+
+    if (dispatchBtn) {
+      dispatchBtn.addEventListener('click', () => {
+        triggerToast('P2P Mesh Ping Broadcasted', 'Handshake sent to Gangman #4 (Kurseong West)');
+      });
+    }
+
+    if (shutterBtn) {
+      shutterBtn.addEventListener('click', () => {
+        if (navigator.vibrate) {
+          navigator.vibrate(60);
+        }
+        triggerToast('Snapshot Captured', 'Quantized SLM running inference on tension fracture...');
+      });
+    }
+  })();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-bold"><div class="flex items-center justify-around h-20 px-2"><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[56px] px-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="route-board" href="#"><span class="material-symbols-outlined text-[24px]">dashboard</span><span class="font-label-sm text-label-sm mt-1 uppercase text-center leading-none">Routes</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] min-h-[56px] px-1 transition-colors text-primary font-bold" data-path="geo-camera" href="#"><span class="material-symbols-outlined text-[24px]">photo_camera</span><span class="font-label-sm text-label-sm mt-1 uppercase text-center leading-none">Vision</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[56px] px-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="p2p-mesh" href="#"><span class="material-symbols-outlined text-[24px]">hub</span><span class="font-label-sm text-label-sm mt-1 uppercase text-center leading-none">Mesh</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[56px] px-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="gangman-log" href="#"><span class="material-symbols-outlined text-[24px]">assignment</span><span class="font-label-sm text-label-sm mt-1 uppercase text-center leading-none">Log</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[56px] px-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="vault-diagnostics" href="#"><span class="material-symbols-outlined text-[24px]">verified_user</span><span class="font-label-sm text-label-sm mt-1 uppercase text-center leading-none">Vault</span></a></div></nav>
+
+</body></html>

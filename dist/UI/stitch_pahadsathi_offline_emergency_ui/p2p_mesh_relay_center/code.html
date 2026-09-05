@@ -1,0 +1,431 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><title>PahadSathi - Offline Transit PWA</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;family=Space+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#f9f9f9;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-error-container": "#93000a", "on-error": "#ffffff", "outline": "#737686", "on-secondary-fixed": "#370e00", "on-surface": "#1b1b1b", "on-tertiary-container": "#c7ffca", "secondary-fixed-dim": "#ffb599", "surface-container-high": "#e8e8e8", "primary-container": "#2563eb", "primary-fixed": "#dbe1ff", "primary": "#004ac6", "on-secondary": "#ffffff", "on-secondary-container": "#571a00", "tertiary": "#006329", "surface-bright": "#f9f9f9", "surface-variant": "#e2e2e2", "surface-container-lowest": "#ffffff", "surface": "#f9f9f9", "on-primary-fixed": "#00174b", "on-tertiary": "#ffffff", "secondary-container": "#fd651e", "error": "#ba1a1a", "inverse-primary": "#b4c5ff", "primary-fixed-dim": "#b4c5ff", "error-container": "#ffdad6", "tertiary-fixed-dim": "#62df7d", "inverse-surface": "#303030", "on-primary": "#ffffff", "surface-container-low": "#f3f3f3", "tertiary-fixed": "#7ffc97", "on-secondary-fixed-variant": "#7f2b00", "surface-tint": "#0053db", "on-surface-variant": "#434655", "secondary": "#a73a00", "on-tertiary-fixed": "#002109", "surface-container-highest": "#e2e2e2", "inverse-on-surface": "#f1f1f1", "on-background": "#1b1b1b", "outline-variant": "#c3c6d7", "secondary-fixed": "#ffdbce", "on-primary-fixed-variant": "#003ea8", "surface-container": "#eeeeee", "on-tertiary-fixed-variant": "#005320", "surface-dim": "#dadada", "tertiary-container": "#007f36", "on-primary-container": "#eeefff", "background": "#f9f9f9" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "stroke-lg": "3px", "stroke-sm": "2px", "gutter-tablet": "1.5rem", "gap-default": "1rem", "touch-target-min": "3.5rem", "offset-sm": "3px", "gap-expanded": "1.5rem", "gutter-mobile": "1rem", "gutter-desktop": "2rem", "offset-lg": "4px", "gap-compact": "0.5rem" }, "fontFamily": { "display-mobile": ["Space Grotesk"], "headline-sm": ["Space Grotesk"], "label-sm": ["JetBrains Mono"], "body-sm": ["JetBrains Mono"], "body-lg": ["JetBrains Mono"], "display": ["Space Grotesk"], "headline-lg": ["Space Grotesk"], "label-lg": ["JetBrains Mono"], "body-md": ["JetBrains Mono"], "headline-md": ["Space Grotesk"], "headline-lg-mobile": ["Space Grotesk"], "label-md": ["JetBrains Mono"] }, "fontSize": { "display-mobile": ["30px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "800" }], "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "700" }], "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.1em", "fontWeight": "800" }], "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "500" }], "display": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "800" }], "headline-lg": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "0.05em", "fontWeight": "700" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }], "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-lg-mobile": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "700" }] } } } };</script></head><body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen selection:bg-primary selection:text-on-primary"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-28 px-gutter-mobile flex flex-col justify-between py-gap-compact"><div class="flex items-center justify-between gap-gap-compact"><div class="flex items-center gap-gap-compact min-w-0"><img alt="PahadSathi Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UHDk2TvEr0jwUDiCNTt8Fw58MBt-iXjeeG0hcyaUeITyqMoTqoRaxKJyylybzNqollpSq44BLu4-n6cAypoojAHNLbvb3do7kEawz5zddb_4PYcpPUVtPX5OKDds__ZxB8lq8HlekZWsdY5qYofwEAQXblrh0I2R3rlvy_t5mMidgjqCIw4XoWk5jibyAXVgxsUUhEP9duyM09iaCkvwuZo5t-OdCedOYhue0sXuvtBkrXuOP_uIuVL7g"><div class="flex flex-col truncate"><div class="flex items-center gap-1.5"><span class="font-headline-sm text-headline-sm text-on-surface uppercase tracking-tight font-extrabold">PahadSathi</span><span class="px-1 py-0.5 bg-on-surface text-surface-container-lowest font-label-sm text-label-sm rounded">OFFLINE PWA</span></div><span class="font-body-sm text-body-sm text-on-surface-variant font-bold">पहाड साथी • DARJEELING SECTOR</span></div></div><div class="flex items-center gap-gap-compact shrink-0"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div><div class="flex items-center justify-between gap-gap-compact overflow-x-auto no-scrollbar"><div class="relative flex items-center"><select class="h-7 pl-2 pr-6 bg-surface-container-lowest text-on-surface font-label-md text-label-md rounded appearance-none outline-none cursor-pointer"><option value="ne">नेपाली (Nepali)</option><option value="bn">বাংলা (Bengali)</option><option value="hi">हिन्दी (Hindi)</option><option selected="" value="en">English</option></select><span class="material-symbols-outlined absolute right-1 pointer-events-none text-[16px] text-on-surface">expand_more</span></div><div class="flex items-center gap-1.5 px-2 py-0.5 bg-on-surface text-surface-container-lowest rounded shrink-0"><span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span><span class="font-label-sm text-label-sm uppercase">⚡ MESH: 8 PEERS</span></div><div class="flex items-center gap-1 px-2 py-0.5 bg-tertiary-container text-on-tertiary-container rounded shrink-0"><span class="font-label-sm text-label-sm uppercase font-bold">💾 92% FREE</span></div></div></div></header><main class="flex flex-col relative w-full px-gutter-mobile pt-28 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full gap-gap-compact">
+<!-- Offline Tactical Telemetry Header -->
+<div class="flex items-center justify-between p-3 bg-surface-container-lowest rounded-xl shadow-md">
+<div class="flex items-center gap-2 min-w-0">
+<div class="w-3 h-3 rounded-full bg-secondary-container animate-ping shrink-0"></div>
+<div class="flex flex-col truncate">
+<span class="font-headline-sm text-headline-sm text-on-surface uppercase tracking-tight truncate">OFFLINE P2P MESH ENGINE</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-bold">AIR-GAP PROTOCOL // CELL 94-D DARJEELING</span>
+</div>
+</div>
+<div class="flex items-center gap-1 px-2.5 py-1 bg-tertiary-container text-on-tertiary-container rounded-lg shadow-sm shrink-0">
+<span class="material-symbols-outlined text-[16px]">wifi_tethering</span>
+<span class="font-label-sm text-label-sm uppercase font-extrabold tracking-widest">LIVE MESH</span>
+</div>
+</div>
+<!-- Interconnection Mode Switcher Tabs -->
+<div class="grid grid-cols-3 gap-1.5 p-1.5 bg-surface-container-high rounded-xl shadow-sm">
+  <button class="flex items-center justify-center gap-1 h-touch-target-min px-1.5 bg-surface-container-lowest text-on-surface font-label-md text-label-md rounded-lg shadow-sm transition-all text-center" id="tab-visual" onclick="switchMode('visual')">
+    <span class="material-symbols-outlined text-[18px] text-primary">qr_code_scanner</span>
+    <span class="font-headline-sm uppercase tracking-tight text-[11px] leading-tight">VISUAL QR</span>
+  </button>
+  <button class="flex items-center justify-center gap-1 h-touch-target-min px-1.5 bg-transparent text-on-surface-variant font-label-md text-label-md rounded-lg transition-all text-center hover:text-on-surface" id="tab-hotspot" onclick="switchMode('hotspot')">
+    <span class="material-symbols-outlined text-[18px]">sensors</span>
+    <span class="font-headline-sm uppercase tracking-tight text-[11px] leading-tight">HOTSPOT</span>
+  </button>
+  <button class="flex items-center justify-center gap-1 h-touch-target-min px-1.5 bg-transparent text-tertiary font-label-md text-label-md rounded-lg transition-all text-center hover:bg-surface-variant" id="tab-chirp" onclick="switchMode('chirp')">
+    <span class="material-symbols-outlined text-[18px] text-tertiary animate-pulse">graphic_eq</span>
+    <span class="font-headline-sm uppercase tracking-tight text-[11px] leading-tight text-tertiary font-bold">CHIRP FSK (RAIN/FOG)</span>
+  </button>
+</div>
+<!-- Workflow Section: Visual Signaling Container -->
+<div class="flex flex-col gap-3" id="visual-signaling-panel">
+<!-- Step 1: SDP Offer Card -->
+<div class="flex flex-col p-4 bg-surface-container-lowest rounded-xl shadow-md">
+<div class="flex items-center justify-between pb-3">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-primary text-on-primary font-label-sm text-label-sm rounded uppercase font-bold">STEP 01</span>
+<span class="font-headline-sm text-headline-sm text-on-surface uppercase tracking-tight">MY SDP OFFER QR</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">V4 • 55B RAW</span>
+</div>
+<div class="flex flex-col sm:flex-row items-center gap-4 py-2">
+<!-- High-Contrast Brutalist QR Presentation -->
+<div class="relative p-3 bg-surface-container-lowest rounded-lg shadow-lg flex flex-col items-center justify-center shrink-0">
+<svg class="w-36 h-36" fill="currentColor" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<!-- Position Markers Top-Left -->
+<rect fill="#1b1b1b" height="28" rx="2" width="28" x="5" y="5"></rect>
+<rect fill="#ffffff" height="20" rx="1" width="20" x="9" y="9"></rect>
+<rect fill="#1b1b1b" height="12" rx="1" width="12" x="13" y="13"></rect>
+<!-- Position Markers Top-Right -->
+<rect fill="#1b1b1b" height="28" rx="2" width="28" x="67" y="5"></rect>
+<rect fill="#ffffff" height="20" rx="1" width="20" x="71" y="9"></rect>
+<rect fill="#1b1b1b" height="12" rx="1" width="12" x="75" y="13"></rect>
+<!-- Position Markers Bottom-Left -->
+<rect fill="#1b1b1b" height="28" rx="2" width="28" x="5" y="67"></rect>
+<rect fill="#ffffff" height="20" rx="1" width="20" x="9" y="71"></rect>
+<rect fill="#1b1b1b" height="12" rx="1" width="12" x="13" y="75"></rect>
+<!-- Tactical Matrix Bit Elements -->
+<rect fill="#004ac6" height="8" width="8" x="38" y="8"></rect>
+<rect fill="#1b1b1b" height="6" width="6" x="50" y="8"></rect>
+<rect fill="#1b1b1b" height="6" width="6" x="38" y="20"></rect>
+<rect fill="#004ac6" height="6" width="10" x="48" y="20"></rect>
+<rect fill="#1b1b1b" height="6" width="6" x="10" y="38"></rect>
+<rect fill="#1b1b1b" height="6" width="8" x="20" y="48"></rect>
+<rect fill="#004ac6" height="14" width="6" x="30" y="38"></rect>
+<rect fill="#1b1b1b" height="8" width="8" x="40" y="38"></rect>
+<rect fill="#1b1b1b" height="6" width="6" x="52" y="38"></rect>
+<rect fill="#004ac6" height="6" width="14" x="64" y="38"></rect>
+<rect fill="#1b1b1b" height="8" width="8" x="82" y="38"></rect>
+<rect fill="#1b1b1b" height="6" width="16" x="40" y="50"></rect>
+<rect fill="#1b1b1b" height="10" width="8" x="60" y="50"></rect>
+<rect fill="#004ac6" height="12" width="6" x="74" y="48"></rect>
+<rect fill="#1b1b1b" height="6" width="6" x="84" y="52"></rect>
+<rect fill="#1b1b1b" height="8" width="8" x="38" y="66"></rect>
+<rect fill="#004ac6" height="14" width="6" x="50" y="66"></rect>
+<rect fill="#1b1b1b" height="6" width="12" x="62" y="66"></rect>
+<rect fill="#1b1b1b" height="12" width="12" x="78" y="66"></rect>
+<rect fill="#004ac6" height="6" width="8" x="38" y="78"></rect>
+<rect fill="#1b1b1b" height="12" width="10" x="62" y="78"></rect>
+<rect fill="#1b1b1b" height="6" width="14" x="42" y="88"></rect>
+<rect fill="#004ac6" height="8" width="8" x="82" y="82"></rect>
+</svg>
+<div class="absolute -top-2 -right-2 px-1.5 py-0.5 bg-primary text-on-primary font-label-sm text-label-sm rounded uppercase font-bold shadow-sm">
+            QWBP-55
+          </div>
+</div>
+<!-- Telemetry Details & Air-Gap Instructions -->
+<div class="flex flex-col justify-between flex-1 w-full gap-2">
+<div class="p-2.5 bg-surface-container rounded-lg">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase font-bold">Offer Payload Hash:</span>
+<div class="font-label-md text-label-md text-on-surface break-all font-mono">0x49E2-SDP-DTLS-WEBRTC-CH94D</div>
+<div class="flex items-center gap-2 mt-1">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">MTU: 1280 • STUN-Free Direct Airframe</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-1.5 p-1.5 bg-surface-container-high rounded-xl shadow-sm">
+  <button class="flex items-center justify-center gap-1 h-touch-target-min px-1.5 bg-surface-container-lowest text-on-surface font-label-md text-label-md rounded-lg shadow-sm transition-all text-center" id="tab-visual" onclick="switchMode('visual')">
+    <span class="material-symbols-outlined text-[18px] text-primary">qr_code_scanner</span>
+    <span class="font-headline-sm uppercase tracking-tight text-[11px] leading-tight">VISUAL QR</span>
+  </button>
+  <button class="flex items-center justify-center gap-1 h-touch-target-min px-1.5 bg-transparent text-on-surface-variant font-label-md text-label-md rounded-lg transition-all text-center hover:text-on-surface" id="tab-hotspot" onclick="switchMode('hotspot')">
+    <span class="material-symbols-outlined text-[18px]">sensors</span>
+    <span class="font-headline-sm uppercase tracking-tight text-[11px] leading-tight">HOTSPOT</span>
+  </button>
+  <button class="flex items-center justify-center gap-1 h-touch-target-min px-1.5 bg-transparent text-tertiary font-label-md text-label-md rounded-lg transition-all text-center hover:bg-surface-variant" id="tab-chirp" onclick="switchMode('chirp')">
+    <span class="material-symbols-outlined text-[18px] text-tertiary animate-pulse">graphic_eq</span>
+    <span class="font-headline-sm uppercase tracking-tight text-[11px] leading-tight text-tertiary font-bold">CHIRP FSK (RAIN/FOG)</span>
+  </button>
+</div>
+</div>
+</div>
+</div><!-- Condensation-Resistant Acoustic Chirp FSK Signaling Card -->
+<div class="flex flex-col p-4 bg-surface-container-lowest rounded-xl shadow-md border-2 border-tertiary gap-3">
+  <div class="flex items-center justify-between pb-1 border-b border-surface-container-high">
+    <div class="flex items-center gap-2">
+      <span class="px-2 py-0.5 bg-tertiary text-on-tertiary font-label-sm text-label-sm rounded uppercase font-extrabold">FEATURE #3</span>
+      <span class="font-headline-sm text-headline-sm text-on-surface uppercase tracking-tight">CHIRP AUDIO FSK SIGNALING</span>
+    </div>
+    <span class="px-2 py-0.5 bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm rounded uppercase font-bold">RAIN/FOG PROVEN</span>
+  </div>
+
+  <p class="font-body-sm text-body-sm text-on-surface-variant">
+    Optical camera obscured by mountain rain or heavy fog? Signal the 55-byte SDP offer directly over acoustic ultrasound frequencies.
+  </p>
+
+  <!-- Ultrasonic Chirp Transmitter Action Area -->
+  <div class="flex flex-col p-3 bg-surface-container rounded-lg gap-2 border border-surface-variant/20">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-secondary text-[20px]">volume_up</span>
+        <span class="font-label-md text-label-md text-on-surface uppercase font-bold">18-20 kHz Ultrasonic/Audio FSK</span>
+      </div>
+      <span class="px-1.5 py-0.5 bg-on-surface text-surface-container-lowest font-label-sm text-label-sm rounded font-mono">55B PAYLOAD</span>
+    </div>
+
+    <!-- Pulsing Audio Waveform Visualizer -->
+    <div class="h-12 bg-inverse-surface rounded flex items-center justify-around px-3 overflow-hidden relative">
+      <div class="w-1.5 h-6 bg-tertiary-fixed rounded animate-pulse"></div>
+      <div class="w-1.5 h-9 bg-tertiary-fixed rounded animate-pulse"></div>
+      <div class="w-1.5 h-4 bg-tertiary-fixed rounded animate-pulse"></div>
+      <div class="w-1.5 h-8 bg-tertiary-fixed rounded animate-pulse"></div>
+      <div class="w-1.5 h-10 bg-secondary-fixed-dim rounded animate-pulse"></div>
+      <div class="w-1.5 h-5 bg-tertiary-fixed rounded animate-pulse"></div>
+      <div class="w-1.5 h-9 bg-tertiary-fixed rounded animate-pulse"></div>
+      <div class="w-1.5 h-7 bg-tertiary-fixed rounded animate-pulse"></div>
+      <div class="w-1.5 h-3 bg-tertiary-fixed rounded animate-pulse"></div>
+      <div class="w-1.5 h-8 bg-secondary-fixed-dim rounded animate-pulse"></div>
+      <div class="w-1.5 h-10 bg-tertiary-fixed rounded animate-pulse"></div>
+      <div class="w-1.5 h-5 bg-tertiary-fixed rounded animate-pulse"></div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+      <button class="flex items-center justify-center gap-1.5 h-touch-target-min px-2 bg-tertiary text-on-tertiary font-headline-sm text-headline-sm uppercase tracking-tight rounded-lg shadow-sm hover:opacity-95 transition-all">
+        <span class="material-symbols-outlined text-[20px]">campaign</span>
+        <span class="text-xs sm:text-sm font-bold">BROADCAST 55B SDP CHIRP</span>
+      </button>
+      <button class="flex items-center justify-center gap-1.5 h-touch-target-min px-2 bg-surface-container-highest text-on-surface font-headline-sm text-headline-sm uppercase tracking-tight rounded-lg shadow-sm hover:bg-surface-variant transition-all">
+        <span class="material-symbols-outlined text-primary text-[20px]">mic</span>
+        <span class="text-xs sm:text-sm font-bold">LISTEN &amp; DECODE CHIRP (FFT)</span>
+      </button>
+    </div>
+  </div>
+</div>
+<!-- Step 2: Neighbor Answer Scanner -->
+<div class="flex flex-col p-4 bg-surface-container-lowest rounded-xl shadow-md">
+<div class="flex items-center justify-between pb-3">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container font-label-sm text-label-sm rounded uppercase font-bold">STEP 02</span>
+<span class="font-headline-sm text-headline-sm text-on-surface uppercase tracking-tight">SCAN NEIGHBOR'S ANSWER QR</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary uppercase font-extrabold">CAMERA READY</span>
+</div>
+<!-- Prominent 56px Action Button -->
+<button class="w-full h-touch-target-min flex items-center justify-center gap-2 bg-primary-container text-on-primary-container font-headline-sm text-headline-sm uppercase tracking-wide rounded-xl shadow-lg active:translate-y-0.5 transition-transform" id="camera-trigger-btn" onclick="toggleCameraScanner()">
+<span class="material-symbols-outlined text-[24px]">photo_camera</span>
+<span class="">OPEN INTEGRATED CAMERA SCANNER (30 FPS)</span>
+</button>
+<!-- Viewfinder Visual Emulation Container (Expandable) -->
+<div class="hidden flex flex-col items-center justify-center relative mt-3 h-52 bg-surface-container-highest rounded-xl overflow-hidden shadow-inner" id="camera-viewfinder">
+<!-- Target Reticle Overlay -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-36 h-36 border-2 border-dashed border-primary/70 rounded-lg flex items-center justify-center relative">
+<div class="w-full h-0.5 bg-secondary-container/90 animate-pulse absolute top-1/2"></div>
+<div class="absolute -top-3 left-2 px-1 bg-surface-container-highest text-on-surface font-label-sm text-label-sm uppercase">VIEWFINDER // AUTO-SYNC</div>
+</div>
+</div>
+<div class="z-10 flex flex-col items-center gap-1.5 p-3 bg-surface-container/90 rounded-lg shadow-sm">
+<span class="material-symbols-outlined text-primary text-[28px] animate-bounce">center_focus_strong</span>
+<span class="font-label-md text-label-md text-on-surface font-bold uppercase">ALIGN OPPOSING QR ANSWER</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">OPTICAL FPS: 30.2 • LIGHT EXPOSURE: AUTO</span>
+</div>
+<div class="absolute bottom-2 left-3 right-3 flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase">QWBP PROTOCOL DECODER v2.4</span>
+<span class="font-label-sm text-label-sm text-tertiary font-bold">READY</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Local Routing Table (Darjeeling Ridge Cell) -->
+<div class="flex flex-col p-4 bg-surface-container-lowest rounded-xl shadow-md gap-3">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]">alt_route</span>
+<span class="font-headline-sm text-headline-sm text-on-surface uppercase tracking-tight">ACTIVE ROUTING TABLE</span>
+</div>
+<div class="px-2 py-0.5 bg-surface-container text-on-surface-variant rounded font-label-sm text-label-sm uppercase self-start sm:self-auto">
+        CELL: 94-D DARJEELING RIDGE (4 ACTIVE)
+      </div>
+</div>
+<!-- Tabular List of Connected Peers -->
+<div class="flex flex-col gap-2">
+<!-- Peer Item 1 -->
+<div class="flex flex-col p-3 bg-surface-container rounded-lg shadow-sm gap-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary shrink-0"></span>
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">GTA-Bridge-01</span>
+<span class="px-1.5 py-0.5 bg-surface-container-lowest text-on-surface font-label-sm text-label-sm rounded uppercase shrink-0">1 HOP</span>
+</div>
+<span class="px-2 py-0.5 bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm rounded uppercase font-bold shrink-0">1.2 MB/S DC</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span class="">ROLE: Railway Station Gateway</span>
+<span class="font-mono text-tertiary font-semibold">WebRTC Connected</span>
+</div>
+</div>
+<!-- Peer Item 2 -->
+<div class="flex flex-col p-3 bg-surface-container rounded-lg shadow-sm gap-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary shrink-0"></span>
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Commuter-Sumo-821</span>
+<span class="px-1.5 py-0.5 bg-surface-container-lowest text-on-surface font-label-sm text-label-sm rounded uppercase shrink-0">2 HOPS</span>
+</div>
+<span class="px-2 py-0.5 bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm rounded uppercase font-bold shrink-0">SYNCED</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span class="">ROLE: Mobile Transit Node</span>
+<span class="font-mono text-on-surface font-semibold">14 Reports Exchanged</span>
+</div>
+</div>
+<!-- Peer Item 3 -->
+<div class="flex flex-col p-3 bg-surface-container rounded-lg shadow-sm gap-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary shrink-0"></span>
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Railway-Walk-04</span>
+<span class="px-1.5 py-0.5 bg-primary-container text-on-primary-container font-label-sm text-label-sm rounded uppercase font-bold shrink-0">DIRECT</span>
+</div>
+<span class="px-2 py-0.5 bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm rounded uppercase font-bold shrink-0">SYNCED</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span class="">ROLE: Gangman Field Node</span>
+<span class="font-mono text-on-surface font-semibold">6 Track Audits Merged</span>
+</div>
+</div>
+<!-- Peer Item 4 (Latent Relay) -->
+<div class="flex flex-col p-3 bg-surface-container rounded-lg shadow-sm gap-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary-container shrink-0"></span>
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Tindharia-Workshop</span>
+<span class="px-1.5 py-0.5 bg-surface-container-lowest text-on-surface font-label-sm text-label-sm rounded uppercase shrink-0">3 HOPS</span>
+</div>
+<span class="px-2 py-0.5 bg-surface-container-high text-on-surface font-label-sm text-label-sm rounded uppercase font-bold shrink-0">LATENT</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span class="">ROLE: Relay Mesh Node</span>
+<span class="font-mono text-secondary font-semibold">Synchronizing Clock...</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Official Emergency Relay Broadcaster Zone -->
+<!-- Altruistic Mesh Routing: Pay It Forward Proxy Lending Card (Feature #6) -->
+<div class="flex flex-col p-4 bg-surface-container-lowest rounded-xl shadow-md border-2 border-primary gap-3">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-1 border-b border-surface-container-high">
+    <div class="flex items-center gap-2 min-w-0">
+      <span class="px-2 py-0.5 bg-primary text-on-primary font-label-sm text-label-sm rounded uppercase font-extrabold shrink-0">FEATURE #6</span>
+      <span class="font-headline-sm text-headline-sm text-on-surface uppercase tracking-tight truncate">ALTRUISTIC "PAY IT FORWARD" PROXY UPLINK</span>
+    </div>
+    <span class="px-2 py-0.5 bg-secondary-container text-on-secondary font-label-sm text-label-sm rounded uppercase font-bold self-start sm:self-auto shrink-0 animate-pulse">
+      RIDGE NODE DETECTED
+    </span>
+  </div>
+
+  <!-- Status Notice -->
+  <div class="flex items-start gap-2 p-2.5 bg-surface-container rounded-lg border-l-4 border-secondary-container">
+    <span class="material-symbols-outlined text-secondary text-[20px] shrink-0 mt-0.5">satellite_alt</span>
+    <div class="flex flex-col text-on-surface">
+      <span class="font-headline-sm text-headline-sm uppercase text-xs sm:text-sm font-bold">Ridge Node Ghoom-Peak-09 has 1-bar 2G/BSoD backhaul.</span>
+      <span class="font-body-sm text-body-sm text-on-surface-variant font-medium mt-0.5">Advertising WebRTC Proxy Tunnel! Mesh packets can hop to cellular uplink.</span>
+    </div>
+  </div>
+
+  <!-- Lending Toggle & Metric Badge -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-2.5 bg-surface-container-low rounded-lg">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-tertiary text-[20px]">forward_to_inbox</span>
+      <span class="font-label-md text-label-md text-on-surface font-bold uppercase">14 Offline Packets Lent &amp; Buffered for Egress</span>
+    </div>
+    <div class="flex items-center gap-2 shrink-0">
+      <span class="font-label-sm text-label-sm text-on-surface-variant uppercase font-bold">LEND CELLULAR:</span>
+      <button class="px-2.5 py-1 bg-tertiary text-on-tertiary font-label-sm text-label-sm rounded uppercase font-extrabold shadow-sm flex items-center gap-1">
+        <span class="w-2 h-2 rounded-full bg-tertiary-fixed animate-ping"></span>
+        <span class="">ENABLED</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Live Proxy Dispatch Queue -->
+  <div class="flex flex-col gap-1.5 p-3 bg-inverse-surface text-inverse-on-surface rounded-lg font-mono text-[11px]">
+    <div class="flex items-center justify-between text-tertiary-fixed font-bold border-b border-surface-variant/20 pb-1">
+      <span class="">PIGGYBACK PROXY DISPATCH QUEUE &gt;&gt; GTA CENTRAL CLOUD</span>
+      <span class="text-[9px] text-outline-variant uppercase">TUNNEL ACTIVE</span>
+    </div>
+    <div class="flex items-center justify-between text-surface-bright py-0.5">
+      <span class="truncate">[QUEUED] Gangman Track Hazard #402 (Batasia Loop)</span>
+      <span class="text-tertiary-fixed shrink-0 font-bold">PROXYING</span>
+    </div>
+    <div class="flex items-center justify-between text-on-surface-variant py-0.5">
+      <span class="truncate">[QUEUED] Sumo Commuter SOS Ping #88-Kurseong</span>
+      <span class="text-secondary-fixed-dim shrink-0 font-bold">BUFFERED</span>
+    </div>
+  </div>
+</div><div class="flex flex-col p-4 bg-surface-container-lowest rounded-xl shadow-lg gap-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[22px]">security</span>
+<span class="font-headline-sm text-headline-sm text-on-surface uppercase tracking-tight">CRITICAL RELAY BROADCAST</span>
+</div>
+<span class="px-2 py-0.5 bg-on-surface text-surface-container-lowest font-label-sm text-label-sm rounded font-bold uppercase">Ed25519</span>
+</div>
+<!-- Cryptographic GTA Public Key Verification Badge -->
+<div class="flex items-center justify-between p-2.5 bg-surface-container rounded-lg">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0">verified</span>
+<span class="font-label-sm text-label-sm text-on-surface font-mono truncate">Key: 8b21-4f1e-9a02-darj-auth</span>
+</div>
+<span class="px-1.5 py-0.5 bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm rounded font-bold uppercase shrink-0">VERIFIED GTA DISASTER CELL</span>
+</div>
+<!-- High-Impact Emergency Broadcast Button -->
+<button class="w-full h-touch-target-min flex items-center justify-center gap-2 bg-secondary-container text-on-secondary font-headline-sm text-headline-sm uppercase tracking-wider rounded-xl shadow-xl active:translate-y-0.5 transition-transform" onclick="triggerEmergencyBroadcast()">
+<span class="material-symbols-outlined text-[24px]">crisis_alert</span>
+<span class="text-center">BROADCAST EMERGENCY ALERT (P2P FLOOD ROUTING)</span>
+</button>
+<!-- Real-time Yjs CRDT Vector Clock & Sync Readout Log -->
+<div class="flex flex-col p-3 bg-inverse-surface text-inverse-on-surface rounded-lg shadow-inner gap-1.5 font-mono">
+<div class="flex items-center justify-between text-[11px] pb-1 border-b border-surface-variant/20">
+<span class="text-tertiary-fixed font-bold">Yjs CRDT VECTOR CLOCK: [GTA:412, SLG:209, KUR:88]</span>
+<span class="text-on-surface-variant text-[10px]" id="log-clock-time">14:28:44 NPT</span>
+</div>
+<div class="flex flex-col gap-1 text-[11px] leading-tight max-h-24 overflow-y-auto" id="crdt-log-stream">
+<div class="flex items-center justify-between text-tertiary-fixed">
+<span class="">&gt; RX_SYNC_STEP_1 from GTA-Bridge-01</span>
+<span class="text-[9px] text-outline-variant">+12 ops</span>
+</div>
+<div class="flex items-center justify-between text-inverse-on-surface">
+<span class="">&gt; Merging 6 gangman hazard vectors... OK</span>
+<span class="text-[9px] text-outline-variant">state: stable</span>
+</div>
+<div class="flex items-center justify-between text-secondary-fixed-dim">
+<span class="">&gt; P2P Flood Mesh ready for relay</span>
+<span class="text-[9px] text-tertiary-fixed">0 dropped</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  function switchMode(mode) {
+    const tabVisual = document.getElementById('tab-visual');
+    const tabHotspot = document.getElementById('tab-hotspot');
+    const visualPanel = document.getElementById('visual-signaling-panel');
+
+    if (mode === 'visual') {
+      tabVisual.className = "flex items-center justify-center gap-1.5 h-touch-target-min px-2 bg-surface-container-lowest text-on-surface font-label-md text-label-md rounded-lg shadow-sm transition-all text-center";
+      tabHotspot.className = "flex items-center justify-center gap-1.5 h-touch-target-min px-2 bg-transparent text-on-surface-variant font-label-md text-label-md rounded-lg transition-all text-center hover:text-on-surface";
+      if (visualPanel) visualPanel.classList.remove('hidden');
+    } else {
+      tabHotspot.className = "flex items-center justify-center gap-1.5 h-touch-target-min px-2 bg-surface-container-lowest text-on-surface font-label-md text-label-md rounded-lg shadow-sm transition-all text-center";
+      tabVisual.className = "flex items-center justify-center gap-1.5 h-touch-target-min px-2 bg-transparent text-on-surface-variant font-label-md text-label-md rounded-lg transition-all text-center hover:text-on-surface";
+      if (visualPanel) visualPanel.classList.add('hidden');
+    }
+  }
+
+  function toggleCameraScanner() {
+    const finder = document.getElementById('camera-viewfinder');
+    const btn = document.getElementById('camera-trigger-btn');
+    if (!finder) return;
+
+    if (finder.classList.contains('hidden')) {
+      finder.classList.remove('hidden');
+      if (btn) btn.innerHTML = '<span class="material-symbols-outlined text-[24px]">close</span><span>CLOSE OPTICAL SCANNER</span>';
+    } else {
+      finder.classList.add('hidden');
+      if (btn) btn.innerHTML = '<span class="material-symbols-outlined text-[24px]">photo_camera</span><span>OPEN INTEGRATED CAMERA SCANNER (30 FPS)</span>';
+    }
+  }
+
+  function simulateCopy() {
+    const btnTxt = document.getElementById('copy-btn-txt');
+    if (btnTxt) {
+      const original = btnTxt.innerText;
+      btnTxt.innerText = "COPIED!";
+      setTimeout(() => { btnTxt.innerText = original; }, 1500);
+    }
+  }
+
+  function simulateRegen() {
+    const stream = document.getElementById('crdt-log-stream');
+    if (!stream) return;
+    const item = document.createElement('div');
+    item.className = "flex items-center justify-between text-primary-fixed";
+    item.innerHTML = '<span>&gt; Regenerated SDP Offer OfferToken_v4</span><span class="text-[9px] text-tertiary-fixed">NOW</span>';
+    stream.prepend(item);
+  }
+
+  function triggerEmergencyBroadcast() {
+    const stream = document.getElementById('crdt-log-stream');
+    if (!stream) return;
+    const item = document.createElement('div');
+    item.className = "flex items-center justify-between text-secondary-fixed-dim font-bold";
+    item.innerHTML = '<span>&gt;&gt; FLOODING CRITICAL EMERGENCY BROADCAST...</span><span class="text-[9px] text-secondary-container">PROPAGATING</span>';
+    stream.prepend(item);
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-bold"><div class="flex items-center justify-around h-20 px-2"><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[56px] px-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="route-board" href="#"><span class="material-symbols-outlined text-[24px]">dashboard</span><span class="font-label-sm text-label-sm mt-1 uppercase text-center leading-none">Routes</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[56px] px-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="geo-camera" href="#"><span class="material-symbols-outlined text-[24px]">photo_camera</span><span class="font-label-sm text-label-sm mt-1 uppercase text-center leading-none">Vision</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] min-h-[56px] px-1 transition-colors text-primary font-bold" data-path="p2p-mesh" href="#"><span class="material-symbols-outlined text-[24px]">hub</span><span class="font-label-sm text-label-sm mt-1 uppercase text-center leading-none">Mesh</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[56px] px-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="gangman-log" href="#"><span class="material-symbols-outlined text-[24px]">assignment</span><span class="font-label-sm text-label-sm mt-1 uppercase text-center leading-none">Log</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[56px] px-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="vault-diagnostics" href="#"><span class="material-symbols-outlined text-[24px]">verified_user</span><span class="font-label-sm text-label-sm mt-1 uppercase text-center leading-none">Vault</span></a></div></nav>
+
+</body></html>
